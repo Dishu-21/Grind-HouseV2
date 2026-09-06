@@ -2,24 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useCallback, useR
 import { useLocalStorage } from '../../shared/hooks/useLocalStorage';
 import { Subject, SubjectData } from '../../shared/types';
 import { parseSubjectJSON } from '../../shared/utils/jsonParser';
-
-import { ExamMode, getActiveSubjects } from '../../shared/config/subjects';
-
-const getStoredExamMode = (): ExamMode => {
-  if (typeof window === 'undefined') return 'jee';
-  try {
-    const raw = window.localStorage.getItem('jee-tracker-exam-mode');
-    if (!raw) return 'jee';
-    try {
-      const parsed = JSON.parse(raw);
-      return parsed === 'neet' ? 'neet' : 'jee';
-    } catch {
-      return raw === 'neet' ? 'neet' : 'jee';
-    }
-  } catch {
-    return 'jee';
-  }
-};
+import { getAllBundledSubjectData, getBundledSubjectData } from '../../shared/utils/syllabusData';
 
 // Graceful migration from old CSV syllabus data to new JSON syllabus (v2026)
 if (typeof window !== 'undefined') {
@@ -82,12 +65,7 @@ const SubjectDataContext = createContext<SubjectDataContextType | undefined>(und
 export const SubjectDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [subjectData, setSubjectData] = useLocalStorage<Record<Subject, SubjectData | null>>(
     'jee-tracker-subject-data',
-    {
-      physics: null,
-      chemistry: null,
-      maths: null,
-      biology: null,
-    }
+    getAllBundledSubjectData()
   );
 
   const [customColumns, setCustomColumns] = useLocalStorage<Record<Subject, string[]>>(
@@ -118,8 +96,8 @@ export const SubjectDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }
   );
 
-  // Load JSON data if not in local storage, or merge subtopics if missing
-  // PERF-004: Only fetch subjects that aren't already cached in localStorage.
+  // Load bundled syllabus data if not in local storage, or merge subtopics if missing
+  // PERF-004: Only parse/update subjects that aren't already cached in localStorage.
   // The ref latch prevents re-triggering when subjectData changes after a merge.
   const hasLoadedRef = useRef(false);
   useEffect(() => {
@@ -165,17 +143,15 @@ export const SubjectDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     };
 
-    const mode = getStoredExamMode();
-    const activeSubjects = getActiveSubjects(mode);
-
-    activeSubjects.forEach((sub) => {
+    (['physics', 'chemistry', 'maths', 'biology'] as Subject[]).forEach((sub) => {
       if (!subjectData[sub]) {
         loadSubjectData(sub);
       }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Merge CSV data with custom columns and filter excluded ones
+  // Merge syllabus data with custom columns and filter excluded ones.
+  // Falls back directly to bundled data if subjectData[subject] is null for instant offline display.
   const mergedSubjectData = useMemo(() => {
     const merged: Record<Subject, SubjectData | null> = {
       physics: null,
@@ -184,7 +160,7 @@ export const SubjectDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
       biology: null,
     };
     (['physics', 'chemistry', 'maths', 'biology'] as Subject[]).forEach((subject) => {
-      const data = subjectData[subject];
+      const data = subjectData[subject] || getBundledSubjectData(subject);
       if (!data) return;
 
       const custom = customColumns[subject] || [];

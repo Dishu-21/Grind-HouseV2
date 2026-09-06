@@ -1,64 +1,26 @@
-import { Chapter, SubjectData } from '../types';
+import { Subject, SubjectData } from '../types';
+import {
+  getBundledSubjectData,
+  getAllBundledSubjectData,
+  parseSyllabusJSON,
+  JSONUnit,
+  ChemistrySyllabus,
+  SyllabusResponse,
+  BUNDLED_SUBJECT_DATA,
+} from './syllabusData';
 
-interface JSONUnit {
-  unit_number: number;
-  unit_name: string;
-  subtopics: string[];
-}
+export type { JSONUnit, ChemistrySyllabus, SyllabusResponse };
+export { parseSyllabusJSON, getBundledSubjectData, getAllBundledSubjectData, BUNDLED_SUBJECT_DATA };
 
-interface ChemistrySyllabus {
-  Physical_Chemistry?: JSONUnit[];
-  Inorganic_Chemistry?: JSONUnit[];
-  Organic_Chemistry?: JSONUnit[];
-}
-
-interface SyllabusResponse {
-  JEE_Main_Physics_Syllabus_2026?: JSONUnit[];
-  JEE_Main_Mathematics_Syllabus_2026?: JSONUnit[];
-  JEE_Main_Chemistry_Syllabus_2026?: ChemistrySyllabus;
-  NEET_Biology_Syllabus_2026?: JSONUnit[];
-}
-
+/**
+ * Loads subject syllabus data. Returns bundled data without runtime HTTP fetch.
+ * Kept async for full backward compatibility with existing callers and tests.
+ */
 export async function parseSubjectJSON(subject: string): Promise<SubjectData> {
-  const response = await fetch(`/data/${subject}.json`);
-  if (!response.ok) {
+  const validSubjects: Subject[] = ['physics', 'chemistry', 'maths', 'biology'];
+  if (!validSubjects.includes(subject as Subject)) {
     throw new Error(`Failed to fetch JSON for subject: ${subject}`);
   }
-  const data: SyllabusResponse = await response.json();
-
-  let units: JSONUnit[] = [];
-
-  if (subject === 'physics') {
-    units = data.JEE_Main_Physics_Syllabus_2026 || [];
-  } else if (subject === 'maths') {
-    units = data.JEE_Main_Mathematics_Syllabus_2026 || [];
-  } else if (subject === 'biology') {
-    units = data.NEET_Biology_Syllabus_2026 || [];
-  } else if (subject === 'chemistry') {
-    const chemData = data.JEE_Main_Chemistry_Syllabus_2026;
-    if (chemData) {
-      units = [
-        ...(chemData.Physical_Chemistry || []),
-        ...(chemData.Inorganic_Chemistry || []),
-        ...(chemData.Organic_Chemistry || []),
-      ];
-    }
-  }
-
-  // Sort units by unit_number to ensure correct sequence
-  units.sort((a, b) => a.unit_number - b.unit_number);
-
-  const materialNames = ['NCERT', 'PYQs', 'Modules'];
-
-  const chapters: Chapter[] = units.map((unit) => ({
-    serial: unit.unit_number,
-    name: unit.unit_name,
-    materials: [...materialNames],
-    subtopics: unit.subtopics || [],
-  }));
-
-  return {
-    chapters,
-    materialNames,
-  };
+  return getBundledSubjectData(subject as Subject);
 }
+
