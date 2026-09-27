@@ -1,3 +1,16 @@
+# [3.7.0](https://github.com/Namankatiyar/ojeet-tracker/compare/v3.6.0...v3.7.0) (2026-09-27)
+
+
+### Bug Fixes
+
+* **docs:** fixed the agents.md ([972b0c3](https://github.com/Namankatiyar/ojeet-tracker/commit/972b0c37fb4856f6367ffd497d328b9d57ee3a8a))
+* **progress:** scope overall progress to active subjects by exam mode ([31d62e1](https://github.com/Namankatiyar/ojeet-tracker/commit/31d62e144b7065a1968d42cb39435759887a4151))
+
+
+### Features
+
+* **syllabus:** bundle static syllabus data for offline ingestion ([0b5068d](https://github.com/Namankatiyar/ojeet-tracker/commit/0b5068d8a59529bc299eb5c8b884e5148dd92c2b)), closes [#20](https://github.com/Namankatiyar/ojeet-tracker/issues/20)
+
 # [3.6.0](https://github.com/Namankatiyar/ojeet-tracker/compare/v3.5.0...v3.6.0) (2026-08-29)
 
 
