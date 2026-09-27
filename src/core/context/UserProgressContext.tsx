@@ -17,7 +17,7 @@ import {
   ChapterDetailProgress,
 } from '../../shared/types';
 import { SyncTombstoneMap, SYNC_DEFAULT_PLANNER_HISTORY_DAYS } from '../../features/sync/syncTypes';
-import { type ExamMode } from '../../shared/config/subjects';
+import { getActiveSubjects, type ExamMode } from '../../shared/config/subjects';
 import { useSubjectData } from './SubjectDataContext';
 
 interface UserProgressContextType {
@@ -465,6 +465,8 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   );
 
+  const activeSubjects = useMemo(() => getActiveSubjects(examMode), [examMode]);
+
   const {
     physicsProgress,
     chemistryProgress,
@@ -472,7 +474,7 @@ export const UserProgressProvider: React.FC<{ children: React.ReactNode }> = ({ 
     biologyProgress,
     overallProgress,
     calculateSubjectProgress,
-  } = useProgress(progress, mergedSubjectData);
+  } = useProgress(progress, mergedSubjectData, undefined, activeSubjects);
 
   const lectureCounter = useMemo(() => {
     let count = 0;

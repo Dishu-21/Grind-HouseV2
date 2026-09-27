@@ -6,7 +6,8 @@ export type ChapterFilter = Partial<Record<Subject, Set<number>>>;
 export function useProgress(
   progress: AppProgress,
   subjectData: Record<Subject, SubjectData | null>,
-  filter?: ChapterFilter
+  filter?: ChapterFilter,
+  activeSubjects?: Subject[]
 ) {
   const subjectMeta = useMemo(() => {
     const meta: Record<
@@ -114,7 +115,7 @@ export function useProgress(
   const biologyProgress = calculateSubjectProgress('biology');
 
   const overallProgress = useMemo(() => {
-    const subjects: Subject[] = ['physics', 'chemistry', 'maths', 'biology'];
+    const subjects = activeSubjects ?? (['physics', 'chemistry', 'maths', 'biology'] as Subject[]);
     let totalItems = 0;
     let completedItems = 0;
 
@@ -126,7 +127,7 @@ export function useProgress(
     });
 
     return totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
-  }, [completedBySubject, subjectMeta]);
+  }, [activeSubjects, completedBySubject, subjectMeta]);
 
   return {
     physicsProgress,

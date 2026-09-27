@@ -178,7 +178,7 @@ export function Dashboard({
   const { user, unconfirmedEmail, resendConfirmationEmail, isConfigured, isPromptDismissed, dismissPrompt } = useRemoteAuth();
   const { remoteStudyAggregate } = useRemoteSync();
   const { progress, dailyResetHour } = useUserProgress();
-  const { examMode } = useActiveSubjects();
+  const { examMode, subjects: activeSubjects } = useActiveSubjects();
 
   const [isResendingEmail, setIsResendingEmail] = useState(false);
   const [resendEmailStatus, setResendEmailStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -202,7 +202,7 @@ export function Dashboard({
   const favouriteExam = useMemo(() => examDates.find((e) => e.isFavourite), [examDates]);
 
   const chapterFilter = useMemo(() => {
-    if (!favouriteExam?.syllabus) return undefined;
+    if (!favouriteExam?.syllabus || Object.keys(favouriteExam.syllabus).length === 0) return undefined;
     const filter: ChapterFilter = {};
     if (favouriteExam.syllabus.physics) filter.physics = new Set(favouriteExam.syllabus.physics);
     if (favouriteExam.syllabus.chemistry) filter.chemistry = new Set(favouriteExam.syllabus.chemistry);
@@ -211,7 +211,7 @@ export function Dashboard({
     return filter;
   }, [favouriteExam]);
 
-  const scopedProgressStats = useProgress(progress, subjectData, chapterFilter);
+  const scopedProgressStats = useProgress(progress, subjectData, chapterFilter, activeSubjects);
   const physicsProgress = favouriteExam ? scopedProgressStats.physicsProgress : propPhysicsProgress;
   const chemistryProgress = favouriteExam ? scopedProgressStats.chemistryProgress : propChemistryProgress;
   const mathsProgress = favouriteExam ? scopedProgressStats.mathsProgress : propMathsProgress;
@@ -735,7 +735,7 @@ export function Dashboard({
               <span className="stat-label">Total Chapters</span>
             </div>
             <div className="stat">
-              <span className="stat-value">3</span>
+              <span className="stat-value">{subjects.length}</span>
               <span className="stat-label">Subjects</span>
             </div>
             <div className="stat">

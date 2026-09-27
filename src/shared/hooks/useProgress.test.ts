@@ -97,4 +97,57 @@ describe('useProgress', () => {
     const { result } = renderHook(() => useProgress(mockProgress, mockSubjectData, filter));
     expect(result.current.physicsProgress).toBe(0);
   });
+
+  it('computes overall progress scoped to activeSubjects, ignoring inactive subjects', () => {
+    const subjectDataWithBio: Record<Subject, SubjectData | null> = {
+      ...mockSubjectData,
+      biology: {
+        chapters: [
+          { serial: 1, name: 'The Living World', materials: ['Notes', 'PYQs'] },
+          { serial: 2, name: 'Biological Classification', materials: ['Notes', 'PYQs'] },
+        ],
+        materialNames: ['Notes', 'PYQs'],
+      },
+    };
+
+    // If activeSubjects is ['physics', 'chemistry'], biology (4 uncompleted items) must not dilute progress
+    const { result } = renderHook(() =>
+      useProgress(mockProgress, subjectDataWithBio, undefined, ['physics', 'chemistry'])
+    );
+    // (3 + 2) / (6 + 2) = 62.5 -> 63% (instead of 5 / 12 = 42%)
+    expect(result.current.overallProgress).toBe(63);
+  });
+
+  it('reports 100% overall progress when all active subjects are 100%, even if inactive subject has 0%', () => {
+    const allCompletedProgress: AppProgress = {
+      physics: {
+        1: { completed: { Notes: true, PYQs: true }, priority: 'high' },
+        2: { completed: { Notes: true, PYQs: true }, priority: 'high' },
+        3: { completed: { Notes: true, PYQs: true }, priority: 'high' },
+      },
+      chemistry: {
+        10: { completed: { Notes: true, PYQs: true }, priority: 'high' },
+      },
+      maths: {},
+      biology: {},
+    };
+
+    const subjectDataWithBio: Record<Subject, SubjectData | null> = {
+      ...mockSubjectData,
+      biology: {
+        chapters: [
+          { serial: 1, name: 'The Living World', materials: ['Notes', 'PYQs'] },
+          { serial: 2, name: 'Biological Classification', materials: ['Notes', 'PYQs'] },
+        ],
+        materialNames: ['Notes', 'PYQs'],
+      },
+    };
+
+    const { result } = renderHook(() =>
+      useProgress(allCompletedProgress, subjectDataWithBio, undefined, ['physics', 'chemistry'])
+    );
+    expect(result.current.physicsProgress).toBe(100);
+    expect(result.current.chemistryProgress).toBe(100);
+    expect(result.current.overallProgress).toBe(100);
+  });
 });
