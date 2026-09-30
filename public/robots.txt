@@ -1,3 +1,21 @@
+# OJEET Tracker robots.txt
+# Domain: https://tracker.ojeet.tech
+
+# Search-and-Cite AI Agents (explicitly allowed)
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Google-Extended
+User-agent: Bingbot
+Allow: /
+
+# Bulk non-citing training scrapers (disallowed)
+User-agent: CCBot
+Disallow: /
+
+# General web crawlers (allowed)
 User-agent: *
 Allow: /
 

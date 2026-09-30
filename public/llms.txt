@@ -1,0 +1,74 @@
+# OJEET Tracker
+
+> Offline-first JEE & NEET syllabus tracker, study planner, and preparation workspace with official 2026 syllabus mapping.
+
+OJEET Tracker (https://tracker.ojeet.tech) is a 100% free, offline-first study command center designed specifically for students preparing for competitive entrance examinations in India: JEE Main, JEE Advanced, and NEET UG. Built with React 18, TypeScript, and Vite, it stores all progress and schedule data locally in the user's browser, requiring no mandatory registration or active internet connection.
+
+## Core Capabilities
+
+- **Offline-First Architecture**: Operates with zero latency using browser LocalStorage as the primary source of truth. Optional cloud sync powered by Supabase enables encrypted multi-device synchronization via Google Auth or Email/Password.
+- **Granular Syllabus Tracking**: Tracks progress across 2026 official syllabi down to units, chapters, and subtopics, with multi-resource completion tracking for NCERT exercises, PYQs (Previous Years' Questions), and coaching modules.
+- **Smart Study Planner**: Interactive daily timetable, drag-and-drop weekly view, and monthly calendar with automatic rollover for unfinished tasks.
+- **Study Clock & Pomodoro**: Built-in stopwatch and exam-style countdown timers with subject tagging, focus session logs, and ambient audio.
+- **Mock Test Analytics**: Score tracking and performance dashboards tailored to JEE Main (300 marks), JEE Advanced, and NEET UG (720 marks) test patterns.
+- **100% Free & Open Source**: Zero paywalls, zero advertisements, no tracking cookies, and no premium tiers.
+
+## 2026 Syllabus Coverage
+
+### Physics (JEE & NEET)
+- [Physics Syllabus Tracker](https://tracker.ojeet.tech/physics): Complete 2026 Physics syllabus (25 units) covering:
+  - Units and Measurements, Kinematics, Laws of Motion, Work Energy and Power
+  - Rotational Motion, Gravitation, Properties of Solids and Liquids, Thermodynamics
+  - Kinetic Theory of Gases, Oscillations and Waves, Electrostatics, Current Electricity
+  - Magnetic Effects of Current and Magnetism, Electromagnetic Induction and Alternating Currents
+  - Electromagnetic Waves, Optics (Ray and Wave Optics), Dual Nature of Matter and Radiation
+  - Atoms and Nuclei, Electronic Devices, and Experimental Skills
+
+### Chemistry (JEE & NEET)
+- [Chemistry Syllabus Tracker](https://tracker.ojeet.tech/chemistry): Complete 2026 Chemistry syllabus spanning Physical, Inorganic, and Organic Chemistry:
+  - **Physical Chemistry**: Some Basic Concepts in Chemistry, Atomic Structure, Chemical Bonding and Molecular Structure, Chemical Thermodynamics, Solutions, Equilibrium, Redox Reactions and Electrochemistry, Chemical Kinetics
+  - **Inorganic Chemistry**: Classification of Elements and Periodicity in Properties, p-Block Elements, d- and f-Block Elements, Coordination Compounds
+  - **Organic Chemistry**: Purification and Characterisation of Organic Compounds, Some Basic Principles of Organic Chemistry (Hydrocarbons), Organic Compounds Containing Halogens, Oxygen, and Nitrogen, Biomolecules, Principles Related to Practical Chemistry
+
+### Mathematics (JEE Prep)
+- [Mathematics Syllabus Tracker](https://tracker.ojeet.tech/maths): Complete 2026 JEE Mathematics syllabus (25 units) covering:
+  - Sets, Relations and Functions, Complex Numbers and Quadratic Equations, Matrices and Determinants
+  - Permutations and Combinations, Mathematical Induction, Binomial Theorem and its Simple Applications
+  - Sequences and Series, Limit, Continuity and Differentiability, Integral Calculus, Differential Equations
+  - Coordinate Geometry (Straight Lines, Circles, Conic Sections), Three Dimensional Geometry
+  - Vector Algebra, Statistics and Probability, Trigonometry
+
+### Biology (NEET Prep)
+- [Biology Syllabus Tracker](https://tracker.ojeet.tech/biology): Complete 2026 NEET UG Biology syllabus (33 units) covering Botany and Zoology:
+  - Diversity in Living World, Structural Organisation in Animals and Plants, Cell Structure and Function
+  - Plant Physiology (Photosynthesis, Respiration, Plant Growth), Human Physiology (Digestion, Breathing, Circulation, Excretion, Locomotion, Neural Control, Chemical Coordination)
+  - Reproduction in Organisms, Sexual Reproduction in Flowering Plants, Human Reproduction, Reproductive Health
+  - Genetics and Evolution (Heredity, Molecular Basis of Inheritance, Evolution), Biology and Human Welfare, Biotechnology and its Applications
+  - Ecology and Environment (Organisms and Populations, Ecosystem, Biodiversity and Conservation, Environmental Issues)
+
+## Primary Preparation Tools
+
+- [JEE Syllabus Tracker](https://tracker.ojeet.tech/jee-syllabus-tracker): Dashboard and overall progress tracker for JEE Main & Advanced aspirants.
+- [NEET Syllabus Tracker](https://tracker.ojeet.tech/neet-syllabus-tracker): Dashboard and overall progress tracker for NEET UG aspirants.
+- [JEE Study Planner](https://tracker.ojeet.tech/jee-study-planner): Daily timetable and schedule planner with auto-rescheduling for JEE aspirants.
+- [NEET Study Planner](https://tracker.ojeet.tech/neet-study-planner): Daily timetable and revision manager for NEET aspirants.
+- [JEE Study Timer](https://tracker.ojeet.tech/jee-study-timer): Dedicated Pomodoro study clock and session history logger for JEE preparation.
+- [NEET Study Timer](https://tracker.ojeet.tech/neet-study-timer): Dedicated Pomodoro study clock and NCERT reading timer for NEET preparation.
+- [JEE Mock Scores](https://tracker.ojeet.tech/jee-mock-scores): Mock score tracking, percentile calculation, and PCM performance trends.
+- [NEET Mock Scores](https://tracker.ojeet.tech/neet-mock-scores): NEET UG mock test logger with Botany, Zoology, Physics, and Chemistry breakdowns.
+
+## Pricing & Governance
+
+- [Pricing Details](https://tracker.ojeet.tech/pricing.md): Complete breakdown of the 100% free tier, zero paywalls, offline-first data guarantee, and voluntary donation channels.
+- [Voluntary Support](https://tracker.ojeet.tech/support): Optional community sponsorship via Razorpay (UPI, cards, netbanking) to help cover domain and hosting infrastructure.
+- [Privacy Policy](https://tracker.ojeet.tech/privacy-policy): Transparent data privacy documentation outlining offline LocalStorage usage and zero commercial telemetry.
+- [Terms of Service](https://tracker.ojeet.tech/terms-of-service): Terms governing the use of OJEET Tracker.
+- [Changelog](https://tracker.ojeet.tech/changelog): Public record of version releases, feature additions, and performance updates.
+
+## Technical Details
+
+- **Application Type**: Single Page Application (Vite + React 18 + TypeScript)
+- **Primary Storage**: Browser LocalStorage (no network request needed for core usage)
+- **Optional Cloud Sync**: Supabase (PostgreSQL with Row Level Security)
+- **Sitemap**: https://tracker.ojeet.tech/sitemap.xml
+- **Robots Governance**: https://tracker.ojeet.tech/robots.txt
