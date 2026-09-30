@@ -237,7 +237,7 @@
         display: none !important;
       }
 
-      /* Immediate App Boot Loader */
+      /* Immediate App Boot Loader - Professional Minimalist */
       .app-boot-loader {
         display: flex;
         flex-direction: column;
@@ -254,28 +254,45 @@
           'Segoe UI',
           Roboto,
           sans-serif;
+        user-select: none;
       }
 
       .boot-spinner-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.25rem;
+        gap: 1.125rem;
       }
 
-      .boot-logo-pulse {
-        animation: bootLogoPulse 1.8s ease-in-out infinite;
-        filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.3));
-        border-radius: 12px;
+      .boot-mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 11px;
+        background: #14141d;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      .boot-title {
+        margin: 0;
+        font-size: 0.725rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #94a3b8;
       }
 
       .boot-loading-bar-track {
-        width: 120px;
-        height: 3px;
-        background: rgba(255, 255, 255, 0.08);
+        width: 80px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.06);
         border-radius: 9999px;
         overflow: hidden;
         position: relative;
+        margin-top: 0.25rem;
       }
 
       .boot-loading-bar-fill {
@@ -283,45 +300,26 @@
         top: 0;
         left: 0;
         bottom: 0;
-        width: 45%;
-        background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+        width: 40%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
         border-radius: 9999px;
-        animation: bootBarFill 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      }
-
-      .boot-loading-text {
-        margin: 0;
-        font-size: 0.8125rem;
-        letter-spacing: 0.02em;
-        color: #64748b;
-        font-weight: 500;
-      }
-
-      @keyframes bootLogoPulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.85;
-        }
-        50% {
-          transform: scale(1.05);
-          opacity: 1;
-        }
+        animation: bootBarFill 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       }
 
       @keyframes bootBarFill {
         0% {
-          transform: translateX(-100%);
+          transform: translateX(-120%);
         }
         100% {
-          transform: translateX(250%);
+          transform: translateX(280%);
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .boot-logo-pulse,
         .boot-loading-bar-fill {
           animation: none;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.2);
         }
       }
     </style>
@@ -331,11 +329,35 @@
     <div id="root">
       <div id="app-boot-loader" class="app-boot-loader" aria-label="Loading OJEET Tracker">
         <div class="boot-spinner-container">
-          <img src="/logo.png" alt="OJEET Tracker" class="boot-logo-pulse" width="64" height="64" />
+          <div class="boot-mark">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 33L21 23L27 28L36 17"
+                stroke="#f1f5f9"
+                stroke-width="3.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M29 17H36V24"
+                stroke="#f1f5f9"
+                stroke-width="3.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <span class="boot-title">OJEET Tracker</span>
           <div class="boot-loading-bar-track">
             <div class="boot-loading-bar-fill"></div>
           </div>
-          <p class="boot-loading-text">Loading workspace...</p>
         </div>
       </div>
     </div>
