@@ -5,11 +5,64 @@
       "destination": "/api/invite-page?inviteCode=:inviteCode"
     },
     {
+      "source": "/:subject(physics|chemistry|maths|math|biology)",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Googlebot).*"
+        }
+      ],
+      "destination": "/api/subject-prerender?subject=:subject"
+    },
+    {
+      "source": "/:subject(physics|chemistry|maths|math|biology)",
+      "has": [
+        {
+          "type": "header",
+          "key": "accept",
+          "value": ".*(text/markdown|text/x-markdown).*"
+        }
+      ],
+      "destination": "/api/subject-prerender?subject=:subject"
+    },
+    {
+      "source": "/:subject(physics|chemistry|maths|math|biology)",
+      "has": [
+        {
+          "type": "query",
+          "key": "format",
+          "value": "markdown"
+        }
+      ],
+      "destination": "/api/subject-prerender?subject=:subject"
+    },
+    {
+      "source": "/:subject(physics|chemistry|maths|math|biology)",
+      "has": [
+        {
+          "type": "query",
+          "key": "format",
+          "value": "html"
+        }
+      ],
+      "destination": "/api/subject-prerender?subject=:subject"
+    },
+    {
       "source": "/((?!api/|assets/|data/|@|.*\\.[a-zA-Z0-9]+$).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
+    {
+      "source": "/api/subject-prerender",
+      "headers": [
+        {
+          "key": "Vary",
+          "value": "Accept, User-Agent"
+        }
+      ]
+    },
     {
       "source": "/",
       "headers": [

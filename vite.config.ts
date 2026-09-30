@@ -16,6 +16,54 @@ const isTest = !!(
   process.argv.some((arg) => arg.includes('vitest'))
 );
 
+import type { ViteDevServer, Plugin, Connect } from 'vite';
+
+function syllabusPrerenderDevPlugin(): Plugin {
+  return {
+    name: 'syllabus-prerender-dev',
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use(
+        async (
+          req: Connect.IncomingMessage & { query?: Record<string, string> },
+          res,
+          next: Connect.NextFunction
+        ) => {
+          const rawUrl = req.url || '';
+          const pathname = rawUrl.split('?')[0];
+          const match = pathname.match(/^\/(physics|chemistry|maths|math|biology)\/?$/);
+          if (match) {
+            const accept = (req.headers['accept'] || '').toLowerCase();
+            const userAgent = req.headers['user-agent'] || '';
+            const isMarkdown =
+              accept.includes('text/markdown') ||
+              accept.includes('text/x-markdown') ||
+              rawUrl.includes('format=markdown');
+            const isBot =
+              /(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Googlebot)/i.test(
+                userAgent
+              );
+            const forcePrerender =
+              rawUrl.includes('format=html') || rawUrl.includes('prerender=true');
+
+            if (isMarkdown || isBot || forcePrerender) {
+              try {
+                const { default: handler } = await import('./api/subject-prerender.js');
+                const urlObj = new URL(req.url, 'http://localhost');
+                req.query = Object.fromEntries(urlObj.searchParams);
+                req.query.subject = match[1];
+                return handler(req, res);
+              } catch (err) {
+                console.error('Prerender middleware error:', err);
+              }
+            }
+          }
+          next();
+        }
+      );
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   define: {
@@ -49,6 +97,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    !isTest && syllabusPrerenderDevPlugin(),
     !isTest &&
       VitePWA({
         injectRegister: false,

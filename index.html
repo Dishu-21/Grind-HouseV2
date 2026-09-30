@@ -367,6 +367,149 @@
             font-size: var(--text-lg, 1.35rem);
           }
         }
+
+        .seo-fallback .subject-seo-header {
+          margin-bottom: var(--space-6, 1.5rem);
+          padding-bottom: var(--space-4, 1rem);
+          border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+        }
+
+        .seo-fallback .seo-breadcrumb {
+          font-size: var(--text-xs, 0.75rem);
+          color: var(--color-text-muted, #64748b);
+          margin-bottom: var(--space-2, 0.5rem);
+        }
+
+        .seo-fallback .seo-breadcrumb a {
+          color: var(--color-accent, #06b6d4);
+          text-decoration: none;
+        }
+
+        .seo-fallback .seo-breadcrumb a:hover {
+          text-decoration: underline;
+        }
+
+        .seo-fallback .subject-stats-bar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-3, 0.75rem);
+          margin-top: var(--space-3, 0.75rem);
+          font-size: var(--text-sm, 0.875rem);
+        }
+
+        .seo-fallback .subject-stats-bar span {
+          background-color: var(--color-bg-secondary, rgba(18, 18, 26, 0.5));
+          padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem);
+          border-radius: var(--radius-sm, 6px);
+          border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+        }
+
+        .seo-fallback .units-container {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: var(--space-4, 1rem);
+          margin-top: var(--space-4, 1rem);
+        }
+
+        @media (min-width: 48rem) {
+          .seo-fallback .units-container {
+            grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+          }
+        }
+
+        .seo-fallback .syllabus-unit-card {
+          background-color: var(--color-bg-secondary, rgba(18, 18, 26, 0.5));
+          border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+          border-radius: var(--radius-md, 8px);
+          padding: var(--space-4, 1rem);
+        }
+
+        .seo-fallback .unit-card-header {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-1, 0.25rem);
+          margin-bottom: var(--space-2, 0.5rem);
+        }
+
+        .seo-fallback .unit-branch-badge {
+          align-self: flex-start;
+          font-size: var(--text-xs, 0.75rem);
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: var(--color-accent, #06b6d4);
+          background-color: rgba(6, 182, 212, 0.1);
+          padding: 0.15rem 0.5rem;
+          border-radius: var(--radius-sm, 4px);
+        }
+
+        .seo-fallback .syllabus-unit-card h3 {
+          margin: 0;
+          font-size: var(--text-base, 1rem);
+          font-weight: 600;
+          color: var(--color-text-primary, #f1f5f9);
+        }
+
+        .seo-fallback .subtopic-count-meta {
+          font-size: var(--text-xs, 0.75rem);
+          color: var(--color-text-muted, #64748b);
+          margin: 0 0 var(--space-2, 0.5rem) 0;
+        }
+
+        .seo-fallback .subtopics-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-1, 0.25rem);
+        }
+
+        .seo-fallback .subtopic-item {
+          font-size: var(--text-sm, 0.875rem);
+          color: var(--color-text-secondary, #94a3b8);
+          margin: 0;
+        }
+
+        .seo-fallback .subtopic-item label {
+          display: flex;
+          align-items: flex-start;
+          gap: var(--space-2, 0.5rem);
+          cursor: default;
+        }
+
+        .seo-fallback .subtopic-item input[type='checkbox'] {
+          margin-top: 0.2rem;
+          accent-color: var(--color-accent, #06b6d4);
+        }
+
+        .seo-fallback .seo-syllabus-nav {
+          margin-top: var(--space-8, 2rem);
+          padding-top: var(--space-4, 1rem);
+          border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
+        }
+
+        .seo-fallback .seo-syllabus-nav ul {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: var(--space-2, 0.5rem);
+          padding-left: var(--space-4, 1rem);
+        }
+
+        @media (min-width: 48rem) {
+          .seo-fallback .seo-syllabus-nav ul {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        .seo-fallback .seo-syllabus-nav a {
+          color: var(--color-accent, #06b6d4);
+          text-decoration: none;
+        }
+
+        .seo-fallback .seo-syllabus-nav a:hover {
+          text-decoration: underline;
+        }
       </style>
       <main
         class="seo-fallback"
