@@ -41,9 +41,9 @@ export const SUBJECT_METADATA = {
   },
 };
 
-// Known AI search crawlers, LLM agents, and citation engines
+// Known AI search crawlers, LLM agents, citation engines, and social media link preview bots
 export const BOT_USER_AGENTS_REGEX =
-  /(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Googlebot|DuckDuckBot|Baiduspider|YandexBot|ia_archiver|Slurp)/i;
+  /(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Applebot|Googlebot|DuckDuckBot|Baiduspider|YandexBot|ia_archiver|Slurp|Discordbot|Twitterbot|facebookexternalhit|WhatsApp|LinkedInBot|TelegramBot|Slackbot|Slack-ImgProxy|Pinterest|SkypeUriPreview|vkShare|W3C_Validator)/i;
 
 /**
  * Normalizes subject string parameter.

@@ -30,8 +30,12 @@ function syllabusPrerenderDevPlugin(): Plugin {
         ) => {
           const rawUrl = req.url || '';
           const pathname = rawUrl.split('?')[0];
-          const match = pathname.match(/^\/(physics|chemistry|maths|math|biology)\/?$/);
-          if (match) {
+          const subjectMatch = pathname.match(/^\/(physics|chemistry|maths|math|biology)\/?$/);
+          const routeMatch = pathname.match(
+            /^\/(jee-mock-scores|neet-mock-scores|jee-study-planner|neet-study-planner|jee-study-timer|neet-study-timer|jee-syllabus-tracker|neet-syllabus-tracker|reports|changelog|privacy-policy|terms-of-service|import|support|community|planner|studyclock)\/?$/
+          );
+
+          if (subjectMatch || routeMatch) {
             const accept = (req.headers['accept'] || '').toLowerCase();
             const userAgent = req.headers['user-agent'] || '';
             const isMarkdown =
@@ -39,21 +43,31 @@ function syllabusPrerenderDevPlugin(): Plugin {
               accept.includes('text/x-markdown') ||
               rawUrl.includes('format=markdown');
             const isBot =
-              /(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Googlebot)/i.test(
+              /(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Applebot|Googlebot|DuckDuckBot|Baiduspider|YandexBot|ia_archiver|Slurp|Discordbot|Twitterbot|facebookexternalhit|WhatsApp|LinkedInBot|TelegramBot|Slackbot|Slack-ImgProxy|Pinterest|SkypeUriPreview|vkShare)/i.test(
                 userAgent
               );
             const forcePrerender =
               rawUrl.includes('format=html') || rawUrl.includes('prerender=true');
 
-            if (isMarkdown || isBot || forcePrerender) {
+            if (subjectMatch && (isMarkdown || isBot || forcePrerender)) {
               try {
                 const { default: handler } = await import('./api/subject-prerender.js');
                 const urlObj = new URL(req.url, 'http://localhost');
                 req.query = Object.fromEntries(urlObj.searchParams);
-                req.query.subject = match[1];
+                req.query.subject = subjectMatch[1];
                 return handler(req, res);
               } catch (err) {
-                console.error('Prerender middleware error:', err);
+                console.error('Subject prerender middleware error:', err);
+              }
+            } else if (routeMatch && (isBot || forcePrerender)) {
+              try {
+                const { default: handler } = await import('./api/edge-meta.js');
+                const urlObj = new URL(req.url, 'http://localhost');
+                req.query = Object.fromEntries(urlObj.searchParams);
+                req.query.route = routeMatch[1];
+                return handler(req, res);
+              } catch (err) {
+                console.error('Edge meta prerender middleware error:', err);
               }
             }
           }

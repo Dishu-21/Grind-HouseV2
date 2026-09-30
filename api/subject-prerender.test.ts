@@ -46,6 +46,13 @@ describe('Subject Prerender & Markdown Content Negotiation', () => {
         'Meta-ExternalAgent',
         'Applebot-Extended',
         'Googlebot/2.1 (+http://www.google.com/bot.html)',
+        'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+        'Twitterbot/1.0',
+        'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
+        'WhatsApp/2.21.12.21 I',
+        'LinkedInBot/1.0 (compatible; Mozilla/5.0; Apache-HttpClient +http://www.linkedin.com)',
+        'TelegramBot (like TwitterBot)',
+        'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)',
       ];
 
       for (const ua of bots) {
