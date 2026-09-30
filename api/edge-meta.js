@@ -422,10 +422,15 @@ export function generateRouteHTML(rawRoute, options = {}) {
   const jsonLdScript = `\n    <script type="application/ld+json">\n${JSON.stringify(jsonLdData, null, 2)}\n    </script>`;
   html = html.replace('</head>', `${jsonLdScript}\n  </head>`);
 
-  // Replace default seo-fallback within #root or inject into #root
+  // Replace default app-boot-loader or seo-fallback within #root or inject into #root
   const prerenderedContent = generateRouteSemanticHtml(normRoute, meta);
   const fallbackRegex = /(<(?:main|div)\s+class="seo-fallback[^"]*"[\s\S]*?<\/(?:main|div)>)/;
-  if (fallbackRegex.test(html)) {
+  if (html.includes('<div id="app-boot-loader"')) {
+    html = html.replace(
+      /<div\s+id="app-boot-loader"[\s\S]*?<\/div>\s*<\/div>/,
+      `${prerenderedContent.trim()}\n    </div>`
+    );
+  } else if (fallbackRegex.test(html)) {
     html = html.replace(fallbackRegex, prerenderedContent.trim());
   } else if (html.includes('<div id="root">')) {
     html = html.replace('<div id="root">', `<div id="root">${prerenderedContent}`);

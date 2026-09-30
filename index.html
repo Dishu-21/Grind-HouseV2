@@ -228,10 +228,119 @@
       href="https://fonts.googleapis.com/css2?family=Betania+Patmos+In&family=Cookie&display=swap"
       rel="stylesheet"
     />
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      /* Ensure fallback content never flashes for users with JavaScript enabled */
+      html.js .seo-fallback {
+        display: none !important;
+      }
+
+      /* Immediate App Boot Loader */
+      .app-boot-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        width: 100%;
+        background-color: #0a0a0f;
+        color: #94a3b8;
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+      }
+
+      .boot-spinner-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .boot-logo-pulse {
+        animation: bootLogoPulse 1.8s ease-in-out infinite;
+        filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.3));
+        border-radius: 12px;
+      }
+
+      .boot-loading-bar-track {
+        width: 120px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .boot-loading-bar-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 45%;
+        background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+        border-radius: 9999px;
+        animation: bootBarFill 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      .boot-loading-text {
+        margin: 0;
+        font-size: 0.8125rem;
+        letter-spacing: 0.02em;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      @keyframes bootLogoPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.85;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+      }
+
+      @keyframes bootBarFill {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(250%);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .boot-logo-pulse,
+        .boot-loading-bar-fill {
+          animation: none;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div id="root">
+      <div id="app-boot-loader" class="app-boot-loader" aria-label="Loading OJEET Tracker">
+        <div class="boot-spinner-container">
+          <img src="/logo.png" alt="OJEET Tracker" class="boot-logo-pulse" width="64" height="64" />
+          <div class="boot-loading-bar-track">
+            <div class="boot-loading-bar-fill"></div>
+          </div>
+          <p class="boot-loading-text">Loading workspace...</p>
+        </div>
+      </div>
+    </div>
+    <div id="modal-root"></div>
+    <noscript>
       <style>
         .seo-fallback {
           box-sizing: border-box;
@@ -656,8 +765,7 @@
           </ul>
         </section>
       </main>
-    </div>
-    <div id="modal-root"></div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
