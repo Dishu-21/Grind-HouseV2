@@ -56,23 +56,161 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "OJEET Tracker",
-        "url": "https://tracker.ojeet.tech",
-        "description": "Free JEE & NEET study dashboard with syllabus tracker, daily planner, and study clock for Physics, Chemistry, Maths & Biology preparation.",
-        "applicationCategory": "EducationalApplication",
-        "operatingSystem": "Any",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "INR"
-        },
-        "browserRequirements": "Requires JavaScript. Requires HTML5.",
-        "softwareVersion": "1.0.5",
-        "author": {
-          "@type": "Organization",
-          "name": "OJEET Tracker"
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://tracker.ojeet.tech/#organization",
+            "name": "OJEET Tracker",
+            "url": "https://tracker.ojeet.tech/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://tracker.ojeet.tech/#logo",
+              "url": "https://tracker.ojeet.tech/logo.png",
+              "caption": "OJEET Tracker Logo"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://tracker.ojeet.tech/#website",
+            "url": "https://tracker.ojeet.tech/",
+            "name": "OJEET Tracker",
+            "description": "Free, offline-first JEE & NEET 2026 syllabus tracker, daily study planner, and study clock.",
+            "publisher": {
+              "@id": "https://tracker.ojeet.tech/#organization"
+            },
+            "inLanguage": "en-IN"
+          },
+          {
+            "@type": ["WebApplication", "SoftwareApplication"],
+            "@id": "https://tracker.ojeet.tech/#webapp",
+            "name": "OJEET Tracker",
+            "url": "https://tracker.ojeet.tech/",
+            "description": "Free JEE & NEET 2026 study dashboard with chapter-wise syllabus tracker, daily study planner, and study clock for Physics, Chemistry, Maths & Biology preparation.",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript. Requires HTML5.",
+            "softwareVersion": "3.6.0",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "INR"
+            },
+            "author": {
+              "@id": "https://tracker.ojeet.tech/#organization"
+            },
+            "provider": {
+              "@id": "https://tracker.ojeet.tech/#organization"
+            },
+            "featureList": [
+              "2026 NTA JEE & NEET chapter-wise syllabus tracker",
+              "Offline-first local storage data persistence",
+              "Daily and weekly study planner with automatic rescheduling",
+              "Pomodoro and interval focus study timer",
+              "PCM and Biology completion and revision analytics"
+            ],
+            "audience": {
+              "@type": "EducationalAudience",
+              "educationalRole": "student",
+              "audienceType": "JEE Main, JEE Advanced, and NEET UG Aspirants"
+            },
+            "teaches": [
+              "JEE Main 2026 Syllabus",
+              "JEE Advanced 2026 Syllabus",
+              "NEET UG 2026 Syllabus",
+              "Physics, Chemistry, Mathematics, and Biology"
+            ],
+            "about": [
+              {
+                "@type": "DefinedTerm",
+                "@id": "https://tracker.ojeet.tech/#jee-main",
+                "name": "JEE Main 2026",
+                "description": "National Testing Agency (NTA) Joint Entrance Examination (Main) for undergraduate engineering admissions.",
+                "inDefinedTermSet": {
+                  "@type": "DefinedTermSet",
+                  "name": "National Testing Agency Entrance Examinations"
+                }
+              },
+              {
+                "@type": "DefinedTerm",
+                "@id": "https://tracker.ojeet.tech/#jee-advanced",
+                "name": "JEE Advanced 2026",
+                "description": "Joint Entrance Examination (Advanced) conducted by IITs for engineering admissions.",
+                "inDefinedTermSet": {
+                  "@type": "DefinedTermSet",
+                  "name": "Indian Institutes of Technology Entrance Examinations"
+                }
+              },
+              {
+                "@type": "DefinedTerm",
+                "@id": "https://tracker.ojeet.tech/#neet-ug",
+                "name": "NEET UG 2026",
+                "description": "National Eligibility cum Entrance Test (Undergraduate) for medical and dental admissions across India.",
+                "inDefinedTermSet": {
+                  "@type": "DefinedTermSet",
+                  "name": "National Testing Agency Entrance Examinations"
+                }
+              },
+              {
+                "@type": "DefinedTerm",
+                "@id": "https://tracker.ojeet.tech/#syllabus-2026",
+                "name": "JEE & NEET 2026 Reduced Syllabus",
+                "description": "Curriculum for Physics, Chemistry, Mathematics, and Biology officially aligned with the latest NTA and NMC syllabus guidelines for 2026."
+              }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://tracker.ojeet.tech/#faq",
+            "isPartOf": {
+              "@id": "https://tracker.ojeet.tech/#website"
+            },
+            "about": {
+              "@id": "https://tracker.ojeet.tech/#webapp"
+            },
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is OJEET Tracker completely free to use?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, OJEET Tracker is 100% free with no subscription fees, no paywalls, and no hidden charges. All syllabus tracking, daily planning, and study timer features for JEE and NEET are accessible at zero cost."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does OJEET Tracker work offline without an internet connection?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, OJEET Tracker is built as an offline-first web application. All chapter progress, study planner schedules, and timer logs persist in local browser storage, allowing you to track your JEE and NEET prep seamlessly in hostels, libraries, or during power outages without active internet."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is OJEET Tracker updated with the latest 2026 JEE and NEET syllabus?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, OJEET Tracker is fully updated for the 2026 exam cycle. It incorporates the latest National Testing Agency (NTA) and NMC syllabus changes for JEE Main, JEE Advanced, and NEET UG across Physics, Chemistry, Mathematics, and Biology, reflecting all officially deleted and modified chapters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How is user study data stored, and is my preparation data private?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Your study data is saved locally on your device using client-side storage by default. OJEET Tracker does not sell or share personal study habits, completion percentages, or timetable records with third parties, ensuring your exam preparation remains completely private."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What exams and subjects does OJEET Tracker cover?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "OJEET Tracker supports JEE Main, JEE Advanced, and NEET UG preparation. It covers all core subjects: Physics, Chemistry, and Mathematics (PCM) for engineering aspirants, as well as Biology (Botany and Zoology) for medical aspirants."
+                }
+              }
+            ]
+          }
+        ]
       }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -110,26 +248,27 @@
       <div class="seo-fallback">
         <h1>JEE &amp; NEET Tracker Built for Aspirants Who Are Actually Serious About Prep</h1>
         <p>
-          OJEET Tracker is a free JEE &amp; NEET tracker that brings your entire preparation under one roof. No more
-          switching between a messy Excel sheet for your syllabus, a random timer app, and a
-          notebook planner. Whether you're a dropper, a class 12 student, or just starting out —
-          OJEET Tracker works offline, loads instantly, and costs nothing.
+          OJEET Tracker is a free JEE &amp; NEET tracker that brings your entire preparation under
+          one roof. No more switching between a messy Excel sheet for your syllabus, a random timer
+          app, and a notebook planner. Whether you're a dropper, a class 12 student, or just
+          starting out — OJEET Tracker works offline, loads instantly, and costs nothing.
         </p>
 
         <h2>Track Every Chapter Across Physics, Chemistry, Maths &amp; Biology</h2>
         <p>
-          OJEET Tracker's syllabus tracker lets you mark chapters as done, in progress, or pending across
-          all subjects for JEE &amp; NEET. See exactly how much of the PCM and Biology syllabus you've covered and where
-          you're falling behind — at a glance. It's the chapter-wise JEE &amp; NEET progress tracker you'd have
-          built yourself if you had the time.
+          OJEET Tracker's syllabus tracker lets you mark chapters as done, in progress, or pending
+          across all subjects for JEE &amp; NEET. See exactly how much of the PCM and Biology
+          syllabus you've covered and where you're falling behind — at a glance. It's the
+          chapter-wise JEE &amp; NEET progress tracker you'd have built yourself if you had the
+          time.
         </p>
 
         <h2>Daily Planner That Actually Keeps Up With You</h2>
         <p>
-          Plan your day, set targets, and stop worrying about missed tasks. The JEE &amp; NEET study planner
-          inside OJEET Tracker has a calendar view and automatically reschedules whatever you didn't finish.
-          Whether you need a daily timetable or a weekly view to see the bigger picture, it's
-          all built in — no app switching, no setup.
+          Plan your day, set targets, and stop worrying about missed tasks. The JEE &amp; NEET study
+          planner inside OJEET Tracker has a calendar view and automatically reschedules whatever
+          you didn't finish. Whether you need a daily timetable or a weekly view to see the bigger
+          picture, it's all built in — no app switching, no setup.
         </p>
 
         <h2>Study Timer Built for JEE &amp; NEET Hours</h2>
@@ -148,12 +287,12 @@
             pending, or skipped across Physics, Chemistry, Maths &amp; Biology.
           </li>
           <li>
-            <strong>Study Timer for JEE &amp; NEET:</strong> Pomodoro and custom interval modes to track every
-            hour you put in.
+            <strong>Study Timer for JEE &amp; NEET:</strong> Pomodoro and custom interval modes to
+            track every hour you put in.
           </li>
           <li>
-            <strong>Daily JEE &amp; NEET Study Planner:</strong> Calendar view with automatic rescheduling of
-            missed tasks.
+            <strong>Daily JEE &amp; NEET Study Planner:</strong> Calendar view with automatic
+            rescheduling of missed tasks.
           </li>
           <li>
             <strong>Works Offline:</strong> Open it anywhere — hostel, library, or during power cuts
