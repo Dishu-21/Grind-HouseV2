@@ -237,6 +237,23 @@
         display: none !important;
       }
 
+      /* Base pre-hydration styling to eliminate white borders/margins */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #0a0a0f;
+        color-scheme: dark;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      #root {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-color: #0a0a0f;
+      }
+
       /* Immediate App Boot Loader - Professional Minimalist */
       .app-boot-loader {
         display: flex;
