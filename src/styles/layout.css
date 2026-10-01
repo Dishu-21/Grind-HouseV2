@@ -146,6 +146,7 @@ html[data-theme^='dark-'] .nav {
   font-weight: 500;
   border-radius: var(--radius-full);
   cursor: pointer;
+  text-decoration: none;
   transition:
     background-color var(--transition-fast),
     color var(--transition-fast),
@@ -568,6 +569,7 @@ html[data-theme^='dark-'] .cloud-sync-indicator-btn:hover {
     font-size: 0.6875rem;
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
     transition: color var(--transition-fast), transform var(--transition-fast);
     padding: var(--space-1) 0;
   }
@@ -718,6 +720,7 @@ html[data-theme^='dark-'] .mobile-sidebar-header {
   cursor: pointer;
   text-align: left;
   width: 100%;
+  text-decoration: none;
   transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
@@ -869,6 +872,7 @@ html[data-theme^='dark-'] .mobile-sidebar-divider {
   font-size: var(--text-sm);
   font-weight: 500;
   cursor: pointer;
+  text-decoration: none;
   transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
@@ -939,6 +943,8 @@ html[data-theme^='dark-'] .mobile-subjects-sheet {
   cursor: pointer;
   text-align: left;
   width: 100%;
+  text-decoration: none;
+  color: inherit;
 }
 
 .mobile-subject-card.active {

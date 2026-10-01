@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Subject, StudySession, MockScore, ProgressCardSettings } from '../../types';
+import { Subject, View, StudySession, MockScore, ProgressCardSettings } from '../../types';
+import { getViewRoute, isPlainLeftClick } from '../../utils/navigation';
 import {
   LayoutDashboard,
   Atom,
@@ -32,18 +34,8 @@ import { CloudSyncIndicator } from './CloudSyncIndicator';
 import { AuthModal } from '../ui/AuthModal';
 
 interface HeaderProps {
-  currentView:
-    | 'dashboard'
-    | 'planner'
-    | 'studyclock'
-    | 'reports'
-    | 'mockscores'
-    | 'support'
-    | 'community'
-    | Subject;
-  onNavigate: (
-    view: 'dashboard' | 'planner' | 'studyclock' | 'reports' | 'mockscores' | 'support' | 'community' | Subject
-  ) => void;
+  currentView: View;
+  onNavigate: (view: View) => void;
   theme: 'light' | 'dark-glass' | 'dark-solid';
   onThemeChange: (theme: 'light' | 'dark-glass' | 'dark-solid') => void;
   onThemeToggle: () => void;
@@ -193,7 +185,8 @@ export function Header({
     };
   }, [isMobileMenuOpen, isSubjectsMenuOpen]);
 
-  const { subjects, subjectMeta } = useActiveSubjects();
+  const { subjects, subjectMeta, examMode } = useActiveSubjects();
+  const isNeet = examMode === 'neet';
 
   const SUBJECT_ICON_MAP: Record<string, React.ComponentType<any>> = {
     atom: Atom,
@@ -261,23 +254,27 @@ export function Header({
 
         <nav className="nav">
           {navItems.map(({ key, label, icon }) => (
-            <button
+            <Link
               key={key}
+              to={getViewRoute(key, isNeet)}
               className={`nav-item ${currentView === key ? 'active' : ''}`}
-              onClick={() => onNavigate(key)}
+              onClick={(e) => {
+                if (!isPlainLeftClick(e)) return;
+                onNavigate(key);
+              }}
             >
               {currentView === key && (
                 <motion.div
                   layoutId="activeNavIndicator"
                   className="nav-item-active-bg"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
               )}
               <span className="nav-icon">{icon}</span>
               <span className="nav-label-wrapper">
                 <span className="nav-label">{label}</span>
               </span>
-            </button>
+            </Link>
           ))}
         </nav>
 
@@ -365,9 +362,13 @@ export function Header({
               </span>
             </button>
 
-            <button
+            <Link
+              to={getViewRoute('support', isNeet)}
               className="theme-toggle"
-              onClick={() => onNavigate('support')}
+              onClick={(e) => {
+                if (!isPlainLeftClick(e)) return;
+                onNavigate('support');
+              }}
               aria-label="Support OJEE-Tracker"
               title="Support OJEE-Tracker"
             >
@@ -378,7 +379,7 @@ export function Header({
                   fill={currentView === 'support' ? '#e63946' : 'transparent'}
                 />
               </span>
-            </button>
+            </Link>
 
             <button
               className="theme-toggle"
@@ -406,9 +407,13 @@ export function Header({
           </button>
         </div>
 
-        <button
+        <Link
+          to={getViewRoute('support', isNeet)}
           className="header-support-mobile"
-          onClick={() => onNavigate('support')}
+          onClick={(e) => {
+            if (!isPlainLeftClick(e)) return;
+            onNavigate('support');
+          }}
           aria-label="Support OJEE-Tracker"
           title="Support OJEE-Tracker"
         >
@@ -417,16 +422,17 @@ export function Header({
             color="#e63946"
             fill={currentView === 'support' ? '#e63946' : 'transparent'}
           />
-        </button>
+        </Link>
       </div>
 
       {/* Mobile Bottom Navigation Bar (Visible only on widths <= 48rem) */}
       {createPortal(
         <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
-          <button
-            type="button"
+          <Link
+            to={getViewRoute('dashboard', isNeet)}
             className={`mobile-bottom-nav-item ${currentView === 'dashboard' ? 'active' : ''}`}
-            onClick={() => {
+            onClick={(e) => {
+              if (!isPlainLeftClick(e)) return;
               onNavigate('dashboard');
               setIsMobileMenuOpen(false);
               setIsSubjectsMenuOpen(false);
@@ -434,11 +440,12 @@ export function Header({
           >
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            to={getViewRoute('planner', isNeet)}
             className={`mobile-bottom-nav-item ${currentView === 'planner' ? 'active' : ''}`}
-            onClick={() => {
+            onClick={(e) => {
+              if (!isPlainLeftClick(e)) return;
               onNavigate('planner');
               setIsMobileMenuOpen(false);
               setIsSubjectsMenuOpen(false);
@@ -446,11 +453,12 @@ export function Header({
           >
             <Calendar size={20} />
             <span>Planner</span>
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            to={getViewRoute('studyclock', isNeet)}
             className={`mobile-bottom-nav-item ${currentView === 'studyclock' ? 'active' : ''}`}
-            onClick={() => {
+            onClick={(e) => {
+              if (!isPlainLeftClick(e)) return;
               onNavigate('studyclock');
               setIsMobileMenuOpen(false);
               setIsSubjectsMenuOpen(false);
@@ -458,7 +466,7 @@ export function Header({
           >
             <Clock size={20} />
             <span>Timer</span>
-          </button>
+          </Link>
           <button
             type="button"
             className={`mobile-bottom-nav-item ${subjects.includes(currentView as Subject) || isSubjectsMenuOpen ? 'active' : ''}`}
@@ -513,11 +521,12 @@ export function Header({
                   const Icon = SUBJECT_ICON_MAP[meta.iconKey] ?? FlaskConical;
 
                   return (
-                    <button
+                    <Link
                       key={meta.key}
-                      type="button"
+                      to={getViewRoute(meta.key, isNeet)}
                       className={`mobile-subject-card ${currentView === meta.key ? 'active' : ''}`}
-                      onClick={() => {
+                      onClick={(e) => {
+                        if (!isPlainLeftClick(e)) return;
                         onNavigate(meta.key);
                         setIsSubjectsMenuOpen(false);
                       }}
@@ -538,7 +547,7 @@ export function Header({
                         </div>
                       </div>
                       <span className="mobile-subject-percent">{Math.round(progress)}%</span>
-                    </button>
+                    </Link>
                   );
                 })}
               </div>
@@ -566,7 +575,9 @@ export function Header({
                     }}
                   />
                   <div>
-                    <h4 className="mobile-sidebar-user-name">{progressCardSettings.userName || 'Student'}</h4>
+                    <h4 className="mobile-sidebar-user-name">
+                      {progressCardSettings.userName || 'Student'}
+                    </h4>
                   </div>
                 </div>
                 <button
@@ -593,11 +604,12 @@ export function Header({
                   <span className="mobile-sidebar-label">Navigation</span>
                   <div className="mobile-sidebar-list">
                     {navItems.map(({ key, label, icon }) => (
-                      <button
+                      <Link
                         key={key}
-                        type="button"
+                        to={getViewRoute(key, isNeet)}
                         className={`mobile-sidebar-item ${currentView === key ? 'active' : ''}`}
-                        onClick={() => {
+                        onClick={(e) => {
+                          if (!isPlainLeftClick(e)) return;
                           onNavigate(key);
                           setIsMobileMenuOpen(false);
                         }}
@@ -609,13 +621,13 @@ export function Header({
                             {key === 'physics'
                               ? `${Math.round(physicsProgress)}%`
                               : key === 'chemistry'
-                              ? `${Math.round(chemistryProgress)}%`
-                              : key === 'maths'
-                              ? `${Math.round(mathsProgress)}%`
-                              : `${Math.round(biologyProgress ?? 0)}%`}
+                                ? `${Math.round(chemistryProgress)}%`
+                                : key === 'maths'
+                                  ? `${Math.round(mathsProgress)}%`
+                                  : `${Math.round(biologyProgress ?? 0)}%`}
                           </span>
                         )}
-                      </button>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -628,7 +640,9 @@ export function Header({
                     <div className="mobile-sidebar-toggle-row">
                       <div className="mobile-sidebar-toggle-info">
                         <span className="mobile-sidebar-toggle-title">AI Study Agent</span>
-                        <span className="mobile-sidebar-toggle-desc">Bottom-right floating assistant</span>
+                        <span className="mobile-sidebar-toggle-desc">
+                          Bottom-right floating assistant
+                        </span>
                       </div>
                       <button
                         type="button"
@@ -641,7 +655,9 @@ export function Header({
                     <div className="mobile-sidebar-toggle-row">
                       <div className="mobile-sidebar-toggle-info">
                         <span className="mobile-sidebar-toggle-title">Music Player</span>
-                        <span className="mobile-sidebar-toggle-desc">Bottom-left floating player</span>
+                        <span className="mobile-sidebar-toggle-desc">
+                          Bottom-left floating player
+                        </span>
                       </div>
                       <button
                         type="button"
@@ -679,7 +695,9 @@ export function Header({
                     )}
                   </button>
 
-                  <span className="mobile-sidebar-label" style={{ marginTop: '1rem' }}>Accent Color</span>
+                  <span className="mobile-sidebar-label" style={{ marginTop: '1rem' }}>
+                    Accent Color
+                  </span>
                   <div className="mobile-color-grid">
                     {ACCENT_COLORS.map((color) => (
                       <button
@@ -725,17 +743,22 @@ export function Header({
 
                 <div className="mobile-sidebar-section">
                   <div className="mobile-sidebar-footer-actions">
-                    <button
-                      type="button"
+                    <Link
+                      to={getViewRoute('support', isNeet)}
                       className="mobile-sidebar-action-btn"
-                      onClick={() => {
+                      onClick={(e) => {
+                        if (!isPlainLeftClick(e)) return;
                         onNavigate('support');
                         setIsMobileMenuOpen(false);
                       }}
                     >
-                      <Heart size={18} color="#e63946" fill={currentView === 'support' ? '#e63946' : 'transparent'} />
+                      <Heart
+                        size={18}
+                        color="#e63946"
+                        fill={currentView === 'support' ? '#e63946' : 'transparent'}
+                      />
                       <span>Support Project</span>
-                    </button>
+                    </Link>
                     <button
                       type="button"
                       className="mobile-sidebar-action-btn"

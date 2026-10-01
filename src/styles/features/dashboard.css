@@ -860,6 +860,8 @@
   border-radius: var(--border-radius);
   padding: 1.5rem;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
   transition: all var(--transition-fast);
   display: flex;
   flex-direction: column;

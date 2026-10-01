@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+
 import { useLocalStorage } from '../../../shared/hooks/useLocalStorage';
 import { ProgressRing } from '../../../shared/components/ui/ProgressBar';
 import {
@@ -17,6 +18,9 @@ import { ExamCountdownModal } from './ExamCountdownModal';
 import { AnalyticsPanels } from './AnalyticsPanels';
 import { Atom, FlaskConical, Pi, Dna, Calendar, Check, Pencil, Trophy, X } from 'lucide-react';
 import { useActiveSubjects } from '../../../shared/hooks/useActiveSubjects';
+import { getViewRoute, isPlainLeftClick } from '../../../shared/utils/navigation';
+
+const MotionLink = typeof motion.create === 'function' ? motion.create(Link) : (Link as any);
 
 interface LeaderboardActiveModalProps {
   onClose: () => void;
@@ -25,7 +29,11 @@ interface LeaderboardActiveModalProps {
 function LeaderboardActiveModal({ onClose }: LeaderboardActiveModalProps) {
   return createPortal(
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '420px' }}>
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: '420px' }}
+      >
         <div className="modal-header">
           <h3>Weekly Leaderboard Active</h3>
           <button className="close-btn" onClick={onClose} aria-label="Close modal">
@@ -35,12 +43,31 @@ function LeaderboardActiveModal({ onClose }: LeaderboardActiveModalProps) {
 
         <div className="modal-body" style={{ gap: 'var(--space-4)', padding: 'var(--space-2) 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', margin: 'var(--space-2) 0' }}>
-            <Trophy size={48} className="gold-icon" style={{ color: 'var(--color-priority-medium)' }} />
+            <Trophy
+              size={48}
+              className="gold-icon"
+              style={{ color: 'var(--color-priority-medium)' }}
+            />
           </div>
-          <p style={{ margin: 0, textAlign: 'center', fontWeight: 500, color: 'var(--text-primary)' }}>
+          <p
+            style={{
+              margin: 0,
+              textAlign: 'center',
+              fontWeight: 500,
+              color: 'var(--text-primary)',
+            }}
+          >
             Track weekly study hours and compare rankings with JEE & NEET aspirants.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--space-3)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-secondary)',
+            }}
+          >
             <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
               <span style={{ color: 'var(--accent)' }}>✦</span>
               <span>Study duration syncs automatically from active sessions.</span>
@@ -51,13 +78,19 @@ function LeaderboardActiveModal({ onClose }: LeaderboardActiveModalProps) {
             </div>
             <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
               <span style={{ color: 'var(--color-priority-high)' }}>⚠️</span>
-              <span>Cheat guardrails active. Suspicious logs (&gt;18 hours/day) auto-exclude profile.</span>
+              <span>
+                Cheat guardrails active. Suspicious logs (&gt;18 hours/day) auto-exclude profile.
+              </span>
             </div>
           </div>
         </div>
 
         <div className="modal-footer" style={{ marginTop: 'var(--space-4)' }}>
-          <button className="primary-btn" onClick={onClose} style={{ width: '100%', justifyContent: 'center' }}>
+          <button
+            className="primary-btn"
+            onClick={onClose}
+            style={{ width: '100%', justifyContent: 'center' }}
+          >
             Dismiss
           </button>
         </div>
@@ -175,7 +208,14 @@ export function Dashboard({
     }
   );
   const [pwaBridge, setPwaBridge] = useState(getPwaBridgeState());
-  const { user, unconfirmedEmail, resendConfirmationEmail, isConfigured, isPromptDismissed, dismissPrompt } = useRemoteAuth();
+  const {
+    user,
+    unconfirmedEmail,
+    resendConfirmationEmail,
+    isConfigured,
+    isPromptDismissed,
+    dismissPrompt,
+  } = useRemoteAuth();
   const { remoteStudyAggregate } = useRemoteSync();
   const { progress, dailyResetHour } = useUserProgress();
   const { examMode, subjects: activeSubjects } = useActiveSubjects();
@@ -202,10 +242,12 @@ export function Dashboard({
   const favouriteExam = useMemo(() => examDates.find((e) => e.isFavourite), [examDates]);
 
   const chapterFilter = useMemo(() => {
-    if (!favouriteExam?.syllabus || Object.keys(favouriteExam.syllabus).length === 0) return undefined;
+    if (!favouriteExam?.syllabus || Object.keys(favouriteExam.syllabus).length === 0)
+      return undefined;
     const filter: ChapterFilter = {};
     if (favouriteExam.syllabus.physics) filter.physics = new Set(favouriteExam.syllabus.physics);
-    if (favouriteExam.syllabus.chemistry) filter.chemistry = new Set(favouriteExam.syllabus.chemistry);
+    if (favouriteExam.syllabus.chemistry)
+      filter.chemistry = new Set(favouriteExam.syllabus.chemistry);
     if (favouriteExam.syllabus.maths) filter.maths = new Set(favouriteExam.syllabus.maths);
     if (favouriteExam.syllabus.biology) filter.biology = new Set(favouriteExam.syllabus.biology);
     return filter;
@@ -213,9 +255,13 @@ export function Dashboard({
 
   const scopedProgressStats = useProgress(progress, subjectData, chapterFilter, activeSubjects);
   const physicsProgress = favouriteExam ? scopedProgressStats.physicsProgress : propPhysicsProgress;
-  const chemistryProgress = favouriteExam ? scopedProgressStats.chemistryProgress : propChemistryProgress;
+  const chemistryProgress = favouriteExam
+    ? scopedProgressStats.chemistryProgress
+    : propChemistryProgress;
   const mathsProgress = favouriteExam ? scopedProgressStats.mathsProgress : propMathsProgress;
-  const biologyProgress = favouriteExam ? scopedProgressStats.biologyProgress ?? 0 : propBiologyProgress ?? 0;
+  const biologyProgress = favouriteExam
+    ? (scopedProgressStats.biologyProgress ?? 0)
+    : (propBiologyProgress ?? 0);
   const overallProgress = favouriteExam ? scopedProgressStats.overallProgress : propOverallProgress;
 
   const [showActiveModal, setShowActiveModal] = useState(false);
@@ -417,7 +463,8 @@ export function Dashboard({
         else if (subject === 'chemistry')
           remoteSeconds = remoteStudyAggregate.total_seconds_chemistry;
         else if (subject === 'maths') remoteSeconds = remoteStudyAggregate.total_seconds_maths;
-        else if (subject === 'biology') remoteSeconds = (remoteStudyAggregate as any)?.total_seconds_biology;
+        else if (subject === 'biology')
+          remoteSeconds = (remoteStudyAggregate as any)?.total_seconds_biology;
       }
 
       const totalSeconds = Math.max(localSeconds, remoteSeconds ?? 0);
@@ -684,12 +731,7 @@ export function Dashboard({
   };
 
   return (
-    <motion.div
-      className="dashboard"
-      variants={containerVariants}
-      initial="hidden"
-      animate="show"
-    >
+    <motion.div className="dashboard" variants={containerVariants} initial="hidden" animate="show">
       <h1 className="sr-only">The Ultimate Offline-First JEE & NEET Tracker for Aspirants</h1>
       {showActiveModal && <LeaderboardActiveModal onClose={handleDismissModal} />}
       <motion.div className="dashboard-header" variants={itemVariants}>
@@ -899,14 +941,15 @@ export function Dashboard({
         {subjects.map(({ key, label, icon, progress, color }) => {
           const stats = getChapterStats(key);
           return (
-            <motion.div
+            <MotionLink
               key={key}
+              to={getViewRoute(key)}
               className="subject-card"
               variants={itemVariants}
-              onClick={() => onNavigate(key)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && onNavigate(key)}
+              onClick={(e: React.MouseEvent) => {
+                if (!isPlainLeftClick(e)) return;
+                onNavigate(key);
+              }}
             >
               <div className="subject-card-header">
                 <span className="subject-icon">{icon}</span>
@@ -946,7 +989,7 @@ export function Dashboard({
                   </svg>
                 </span>
               </div>
-            </motion.div>
+            </MotionLink>
           );
         })}
       </div>
@@ -957,7 +1000,9 @@ export function Dashboard({
           mockScores={mockScores}
           onAddMockScore={onAddMockScore}
           onDeleteMockScore={onDeleteMockScore}
-          onOpenCockpit={() => navigate(examMode === 'neet' ? '/neet-mock-scores' : '/jee-mock-scores')}
+          onOpenCockpit={() =>
+            navigate(examMode === 'neet' ? '/neet-mock-scores' : '/jee-mock-scores')
+          }
         />
       </motion.div>
 

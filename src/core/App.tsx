@@ -7,8 +7,9 @@ import { ThemeOnboardingModal } from '../shared/components/ui/ThemeOnboardingMod
 import { PasswordResetModal } from '../shared/components/ui/PasswordResetModal';
 import { TopLoader } from '../shared/components/ui/TopLoader';
 import { topLoader } from '../shared/hooks/useTopLoader';
-import { Subject } from '../shared/types';
+import { View } from '../shared/types';
 import { getLogicalTodayStr } from '../shared/utils/date';
+import { getViewRoute } from '../shared/utils/navigation';
 
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { SubjectDataProvider } from './context/SubjectDataContext';
@@ -35,8 +36,6 @@ const OnboardingFlow = lazy(() =>
     default: m.OnboardingFlow,
   }))
 );
-
-type View = 'dashboard' | 'planner' | 'studyclock' | 'reports' | 'mockscores' | 'support' | 'community' | Subject;
 
 function ProfileSyncManager() {
   useProfileSync();
@@ -113,18 +112,7 @@ function AppContent({ onboardingComplete }: AppContentProps) {
   const handleNavigate = useCallback(
     (view: View) => {
       topLoader.start();
-      if (view === 'dashboard')
-        navigate(isNeet ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker');
-      else if (view === 'planner')
-        navigate(isNeet ? '/neet-study-planner' : '/jee-study-planner');
-      else if (view === 'studyclock')
-        navigate(isNeet ? '/neet-study-timer' : '/jee-study-timer');
-      else if (view === 'reports') navigate('/reports');
-      else if (view === 'mockscores')
-        navigate(isNeet ? '/neet-mock-scores' : '/jee-mock-scores');
-      else if (view === 'support') navigate('/support');
-      else if (view === 'community') navigate('/community');
-      else navigate(`/${view}`);
+      navigate(getViewRoute(view, isNeet));
     },
     [isNeet, navigate]
   );
@@ -142,13 +130,17 @@ function AppContent({ onboardingComplete }: AppContentProps) {
   useEffect(() => {
     const currentPath = location.pathname;
     if (isNeet) {
-      if (currentPath === '/jee-syllabus-tracker') navigate('/neet-syllabus-tracker', { replace: true });
-      else if (currentPath === '/jee-study-planner') navigate('/neet-study-planner', { replace: true });
+      if (currentPath === '/jee-syllabus-tracker')
+        navigate('/neet-syllabus-tracker', { replace: true });
+      else if (currentPath === '/jee-study-planner')
+        navigate('/neet-study-planner', { replace: true });
       else if (currentPath === '/jee-study-timer') navigate('/neet-study-timer', { replace: true });
       else if (currentPath === '/jee-mock-scores') navigate('/neet-mock-scores', { replace: true });
     } else {
-      if (currentPath === '/neet-syllabus-tracker') navigate('/jee-syllabus-tracker', { replace: true });
-      else if (currentPath === '/neet-study-planner') navigate('/jee-study-planner', { replace: true });
+      if (currentPath === '/neet-syllabus-tracker')
+        navigate('/jee-syllabus-tracker', { replace: true });
+      else if (currentPath === '/neet-study-planner')
+        navigate('/jee-study-planner', { replace: true });
       else if (currentPath === '/neet-study-timer') navigate('/jee-study-timer', { replace: true });
       else if (currentPath === '/neet-mock-scores') navigate('/jee-mock-scores', { replace: true });
     }
@@ -186,11 +178,8 @@ function AppContent({ onboardingComplete }: AppContentProps) {
   useAutoShiftTasks(plannerTasks, setPlannerTasks, disableAutoShift, dailyResetHour);
   useDocumentMetadata();
 
-
   return (
-    <div
-      className={`app ${enableAIAgent ? 'has-chat-fab' : ''}`.trim()}
-    >
+    <div className={`app ${enableAIAgent ? 'has-chat-fab' : ''}`.trim()}>
       <TopLoader />
       <ProfileSyncManager />
       <div className="top-header-wrapper">

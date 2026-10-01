@@ -1,6 +1,19 @@
 export type Priority = 'high' | 'medium' | 'low' | 'none';
 
 export type Subject = 'physics' | 'chemistry' | 'maths' | 'biology';
+
+export type NavView =
+  | 'dashboard'
+  | 'planner'
+  | 'studyclock'
+  | 'reports'
+  | 'mockscores'
+  | 'support'
+  | 'community'
+  | Subject;
+
+export type View = NavView;
+
 export type MockExamType = 'jm' | 'ja' | 'bt' | string;
 
 export interface Chapter {
