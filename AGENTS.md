@@ -46,6 +46,20 @@ For any non-trivial task, invoke the matching skill(s) below *before* writing co
 
 Other available skills: `code-review`, `codebase-design`, `domain-modeling`, `prototype`, `research`, `resolving-merge-conflicts`, `scaffold-exercises`, `setup-pre-commit`, `wizard`, `writing-for-agents`, `grilling`, `migrate-to-shoehorn`, `git-guardrails-claude-code`.
 
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues (using `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Canonical 5 triage roles (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context (`CONTEXT.md` and `docs/adr/` at repo root). See `docs/agents/domain.md`.
+
 ## Git & GitHub
 - PRs: push to remote, base `develop`, use `.github/pull_request_template.md`
 - Versioning (semantic-release): `feat` → minor, `fix` → patch, `!` or `BREAKING CHANGE` → major
