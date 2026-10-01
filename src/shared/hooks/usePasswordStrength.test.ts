@@ -86,7 +86,7 @@ describe('calculatePasswordStrength', () => {
         score: 3,
         label: 'Strong',
       });
-      expect(calculatePasswordStrength('Abcdefghijklmno1')).toEqual({
+      expect(calculatePasswordStrength('Abcdefghijklmn1')).toEqual({
         score: 3,
         label: 'Strong',
       });

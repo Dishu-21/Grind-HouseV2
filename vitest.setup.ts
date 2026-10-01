@@ -2,6 +2,26 @@ import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 
+(globalThis as unknown as Record<string, string>).__APP_VERSION__ = '3.6.0';
+(globalThis as unknown as Record<string, string>).__APP_BUILD_ID__ = '3.6.0-test';
+
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }),
+  });
+}
+
+
 class MockLocalStorage {
   private store: Record<string, string> = {};
 

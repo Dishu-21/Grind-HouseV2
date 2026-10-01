@@ -18,6 +18,8 @@ vi.mock('lucide-react', () => ({
   Cloud: () => <div data-testid="icon-cloud" />,
   LogOut: () => <div data-testid="icon-logout" />,
   ChevronDown: () => <div data-testid="icon-chevron-down" />,
+  KeyRound: () => <div data-testid="icon-key-round" />,
+  Mail: () => <div data-testid="icon-mail" />,
 }));
 
 // Mock Contexts

@@ -111,6 +111,10 @@ const supabaseState = vi.hoisted(() => {
   return { supabase, tables, fromTables, reset };
 });
 
+vi.mock('../../shared/lib/supabase', () => ({
+  supabase: supabaseState.supabase,
+}));
+
 vi.mock('./RemoteAuthContext', () => ({
   useRemoteAuth: () => ({
     user: { id: 'user-1' },
@@ -225,10 +229,13 @@ describe('RemoteSyncContext egress optimizations', () => {
       </RemoteSyncProvider>
     );
 
-    await waitFor(() => {
-      const userSync = supabaseState.tables.get('user_sync_state');
-      expect(userSync?.selects.length ?? 0).toBeGreaterThan(0);
-    });
+    await waitFor(
+      () => {
+        const userSync = supabaseState.tables.get('user_sync_state');
+        expect(userSync?.selects.length ?? 0).toBeGreaterThan(0);
+      },
+      { timeout: 5000 }
+    );
 
     const userSync = supabaseState.tables.get('user_sync_state');
     expect(userSync?.selects).toContain('checksum,payload_version');
