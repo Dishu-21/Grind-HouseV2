@@ -43,7 +43,11 @@ function ProfileSyncManager() {
   return null;
 }
 
-function AppContent() {
+interface AppContentProps {
+  onboardingComplete: boolean;
+}
+
+function AppContent({ onboardingComplete }: AppContentProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -240,7 +244,7 @@ function AppContent() {
         isOpen={isDiscordModalOpen}
         onClose={() => setIsDiscordModalOpen(false)}
       />
-      <ThemeOnboardingModal />
+      {onboardingComplete && <ThemeOnboardingModal />}
       {enableAIAgent && (
         <Suspense fallback={null}>
           <ChatDrawer />
@@ -255,22 +259,26 @@ function AppContent() {
   );
 }
 
+const DASHBOARD_ROUTES = new Set(['/', '/jee-syllabus-tracker', '/neet-syllabus-tracker']);
+
 function AppShell() {
+  const location = useLocation();
   const [onboardingComplete, setOnboardingComplete] = useState(() => {
     return localStorage.getItem('jee-tracker-onboarding-complete') === 'true';
   });
 
-  if (!onboardingComplete) {
-    return (
-      <Suspense fallback={null}>
-        <OnboardingFlow onComplete={() => setOnboardingComplete(true)} />
-      </Suspense>
-    );
-  }
+  const normalizedPath = location.pathname.replace(/\/+$/, '') || '/';
+  const isDashboardRoute = DASHBOARD_ROUTES.has(normalizedPath);
+  const showOnboarding = !onboardingComplete && isDashboardRoute;
 
   return (
     <RemoteSyncProvider>
-      <AppContent />
+      <AppContent onboardingComplete={onboardingComplete} />
+      {showOnboarding && (
+        <Suspense fallback={null}>
+          <OnboardingFlow onComplete={() => setOnboardingComplete(true)} />
+        </Suspense>
+      )}
     </RemoteSyncProvider>
   );
 }
