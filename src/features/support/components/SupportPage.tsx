@@ -6,6 +6,7 @@ import { useRemoteAuth } from '../../../core/context/RemoteAuthContext';
 import { useUserProgress } from '../../../core/context/UserProgressContext';
 import { AuthModal } from '../../../shared/components/ui/AuthModal';
 import { getDisplayName } from '../../../shared/utils/auth';
+import { loadSupportFonts } from '../utils/loadSupportFonts';
 
 // --- Doodles & Icons ---
 const DoodleHeart = ({
@@ -132,6 +133,7 @@ export const SupportPage: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
+    loadSupportFonts();
     setSupportOverride(true);
     return () => {
       setSupportOverride(false);
@@ -692,8 +694,8 @@ export const SupportPage: React.FC = () => {
 
             <div className="spread-modal-body">
               <p>
-                Your support means the world to me. It directly helps in keeping OJEET Tracker alive,
-                maintaining the servers, and improving the experience for every aspirant.
+                Your support means the world to me. It directly helps in keeping OJEET Tracker
+                alive, maintaining the servers, and improving the experience for every aspirant.
               </p>
               <p>
                 Wishing you the absolute best for your JEE & NEET preparation! Keep tracking, keep

@@ -14,6 +14,7 @@
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#06b6d4" />
     <meta
@@ -224,19 +225,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Betania+Patmos+In&family=Cookie&display=swap"
-      rel="stylesheet"
-    />
-    <script>
-      document.documentElement.classList.add('js');
-    </script>
     <style>
-      /* Ensure fallback content never flashes for users with JavaScript enabled */
-      html.js .seo-fallback {
-        display: none !important;
-      }
-
       /* Base pre-hydration styling scoped only while the boot loader is active, eliminating white borders without overriding layered post-hydration styles */
       html:has(#app-boot-loader),
       body:has(#app-boot-loader) {
@@ -289,454 +278,112 @@
   <body>
     <div id="root">
       <div id="app-boot-loader" class="app-boot-loader" aria-label="Loading">
-        <svg
-          class="apple-spinner"
-          viewBox="0 0 36 36"
-          fill="currentColor"
-          aria-hidden="true"
-        >
+        <svg class="apple-spinner" viewBox="0 0 36 36" fill="currentColor" aria-hidden="true">
           <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" opacity="1.0" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(30 18 18)" opacity="0.08" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(60 18 18)" opacity="0.14" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(90 18 18)" opacity="0.20" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(120 18 18)" opacity="0.28" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(150 18 18)" opacity="0.37" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(180 18 18)" opacity="0.46" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(210 18 18)" opacity="0.55" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(240 18 18)" opacity="0.64" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(270 18 18)" opacity="0.73" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(300 18 18)" opacity="0.82" />
-          <rect x="16.625" y="3" width="2.75" height="7.5" rx="1.375" transform="rotate(330 18 18)" opacity="0.91" />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(30 18 18)"
+            opacity="0.08"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(60 18 18)"
+            opacity="0.14"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(90 18 18)"
+            opacity="0.20"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(120 18 18)"
+            opacity="0.28"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(150 18 18)"
+            opacity="0.37"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(180 18 18)"
+            opacity="0.46"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(210 18 18)"
+            opacity="0.55"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(240 18 18)"
+            opacity="0.64"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(270 18 18)"
+            opacity="0.73"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(300 18 18)"
+            opacity="0.82"
+          />
+          <rect
+            x="16.625"
+            y="3"
+            width="2.75"
+            height="7.5"
+            rx="1.375"
+            transform="rotate(330 18 18)"
+            opacity="0.91"
+          />
         </svg>
       </div>
     </div>
     <div id="modal-root"></div>
-    <noscript>
-      <style>
-        .seo-fallback {
-          box-sizing: border-box;
-          width: 100%;
-          max-width: var(--content-max-width, 56rem);
-          margin: 0 auto;
-          padding: var(--space-4, 1rem) var(--space-3, 0.75rem);
-          font-family:
-            'Inter',
-            -apple-system,
-            BlinkMacSystemFont,
-            'Segoe UI',
-            Roboto,
-            sans-serif;
-          color: var(--color-text-secondary, #94a3b8);
-          background-color: var(--color-bg-base, #0a0a0f);
-          line-height: 1.6;
-        }
-
-        .seo-fallback h1 {
-          font-size: var(--text-xl, 1.5rem);
-          font-weight: 700;
-          color: var(--color-text-primary, #f1f5f9);
-          margin: 0 0 var(--space-4, 1rem) 0;
-          line-height: 1.3;
-        }
-
-        .seo-fallback h2 {
-          font-size: var(--text-lg, 1.25rem);
-          font-weight: 600;
-          color: var(--color-text-primary, #f1f5f9);
-          margin: var(--space-6, 1.5rem) 0 var(--space-2, 0.5rem) 0;
-          line-height: 1.4;
-        }
-
-        .seo-fallback p {
-          margin: 0 0 var(--space-3, 0.75rem) 0;
-          font-size: var(--text-base, 1rem);
-          color: var(--color-text-secondary, #94a3b8);
-        }
-
-        .seo-fallback ul {
-          margin: var(--space-2, 0.5rem) 0 var(--space-4, 1rem) 0;
-          padding-left: var(--space-5, 1.25rem);
-        }
-
-        .seo-fallback li {
-          margin-bottom: var(--space-2, 0.5rem);
-          color: var(--color-text-secondary, #94a3b8);
-        }
-
-        .seo-fallback strong {
-          color: var(--color-text-primary, #f1f5f9);
-        }
-
-        .seo-fallback .comparison-table-wrapper {
-          width: 100%;
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
-          margin: var(--space-4, 1rem) 0;
-          border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
-          border-radius: var(--radius-sm, 8px);
-          background-color: var(--color-bg-secondary, rgba(18, 18, 26, 0.35));
-        }
-
-        .seo-fallback .comparison-table {
-          width: 100%;
-          min-width: 36rem;
-          border-collapse: collapse;
-          font-size: var(--text-sm, 0.875rem);
-          text-align: left;
-        }
-
-        .seo-fallback .comparison-table th,
-        .seo-fallback .comparison-table td {
-          padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
-          border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
-          vertical-align: top;
-        }
-
-        .seo-fallback .comparison-table thead th {
-          background-color: var(--color-bg-tertiary, rgba(26, 26, 40, 0.5));
-          color: var(--color-text-primary, #f1f5f9);
-          font-weight: 600;
-          white-space: nowrap;
-        }
-
-        .seo-fallback .comparison-table tbody th {
-          color: var(--color-text-primary, #f1f5f9);
-          font-weight: 500;
-          white-space: nowrap;
-        }
-
-        .seo-fallback .comparison-table tbody tr:last-child th,
-        .seo-fallback .comparison-table tbody tr:last-child td {
-          border-bottom: none;
-        }
-
-        .seo-fallback .col-highlight {
-          color: var(--accent, #06b6d4);
-          background-color: var(--accent-light, rgba(6, 182, 212, 0.08));
-          font-weight: 600;
-        }
-
-        .seo-fallback .comparison-summary {
-          margin-top: var(--space-3, 0.75rem);
-          font-size: var(--text-sm, 0.875rem);
-          color: var(--color-text-muted, #64748b);
-        }
-
-        .seo-fallback .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border: 0;
-        }
-
-        @media (min-width: 48rem) {
-          .seo-fallback {
-            padding: var(--space-8, 2rem) var(--space-6, 1.5rem);
-          }
-
-          .seo-fallback h1 {
-            font-size: var(--text-xl, 1.75rem);
-          }
-
-          .seo-fallback h2 {
-            font-size: var(--text-lg, 1.35rem);
-          }
-        }
-
-        .seo-fallback .subject-seo-header {
-          margin-bottom: var(--space-6, 1.5rem);
-          padding-bottom: var(--space-4, 1rem);
-          border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
-        }
-
-        .seo-fallback .seo-breadcrumb {
-          font-size: var(--text-xs, 0.75rem);
-          color: var(--color-text-muted, #64748b);
-          margin-bottom: var(--space-2, 0.5rem);
-        }
-
-        .seo-fallback .seo-breadcrumb a {
-          color: var(--color-accent, #06b6d4);
-          text-decoration: none;
-        }
-
-        .seo-fallback .seo-breadcrumb a:hover {
-          text-decoration: underline;
-        }
-
-        .seo-fallback .subject-stats-bar {
-          display: flex;
-          flex-wrap: wrap;
-          gap: var(--space-3, 0.75rem);
-          margin-top: var(--space-3, 0.75rem);
-          font-size: var(--text-sm, 0.875rem);
-        }
-
-        .seo-fallback .subject-stats-bar span {
-          background-color: var(--color-bg-secondary, rgba(18, 18, 26, 0.5));
-          padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem);
-          border-radius: var(--radius-sm, 6px);
-          border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
-        }
-
-        .seo-fallback .units-container {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: var(--space-4, 1rem);
-          margin-top: var(--space-4, 1rem);
-        }
-
-        @media (min-width: 48rem) {
-          .seo-fallback .units-container {
-            grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-          }
-        }
-
-        .seo-fallback .syllabus-unit-card {
-          background-color: var(--color-bg-secondary, rgba(18, 18, 26, 0.5));
-          border: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
-          border-radius: var(--radius-md, 8px);
-          padding: var(--space-4, 1rem);
-        }
-
-        .seo-fallback .unit-card-header {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-1, 0.25rem);
-          margin-bottom: var(--space-2, 0.5rem);
-        }
-
-        .seo-fallback .unit-branch-badge {
-          align-self: flex-start;
-          font-size: var(--text-xs, 0.75rem);
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          color: var(--color-accent, #06b6d4);
-          background-color: rgba(6, 182, 212, 0.1);
-          padding: 0.15rem 0.5rem;
-          border-radius: var(--radius-sm, 4px);
-        }
-
-        .seo-fallback .syllabus-unit-card h3 {
-          margin: 0;
-          font-size: var(--text-base, 1rem);
-          font-weight: 600;
-          color: var(--color-text-primary, #f1f5f9);
-        }
-
-        .seo-fallback .subtopic-count-meta {
-          font-size: var(--text-xs, 0.75rem);
-          color: var(--color-text-muted, #64748b);
-          margin: 0 0 var(--space-2, 0.5rem) 0;
-        }
-
-        .seo-fallback .subtopics-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-1, 0.25rem);
-        }
-
-        .seo-fallback .subtopic-item {
-          font-size: var(--text-sm, 0.875rem);
-          color: var(--color-text-secondary, #94a3b8);
-          margin: 0;
-        }
-
-        .seo-fallback .subtopic-item label {
-          display: flex;
-          align-items: flex-start;
-          gap: var(--space-2, 0.5rem);
-          cursor: default;
-        }
-
-        .seo-fallback .subtopic-item input[type='checkbox'] {
-          margin-top: 0.2rem;
-          accent-color: var(--color-accent, #06b6d4);
-        }
-
-        .seo-fallback .seo-syllabus-nav {
-          margin-top: var(--space-8, 2rem);
-          padding-top: var(--space-4, 1rem);
-          border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.08));
-        }
-
-        .seo-fallback .seo-syllabus-nav ul {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: var(--space-2, 0.5rem);
-          padding-left: var(--space-4, 1rem);
-        }
-
-        @media (min-width: 48rem) {
-          .seo-fallback .seo-syllabus-nav ul {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-
-        .seo-fallback .seo-syllabus-nav a {
-          color: var(--color-accent, #06b6d4);
-          text-decoration: none;
-        }
-
-        .seo-fallback .seo-syllabus-nav a:hover {
-          text-decoration: underline;
-        }
-      </style>
-      <main
-        class="seo-fallback"
-        id="seo-fallback"
-        aria-label="OJEET Tracker Overview and Feature Comparison"
-      >
-        <h1>OJEET Tracker: Offline-First JEE &amp; NEET Syllabus Tracker and Study Planner</h1>
-
-        <section class="seo-answer-block">
-          <h2>What is OJEET Tracker?</h2>
-          <p>
-            OJEET Tracker is a free, offline-first study tracker and daily planner engineered
-            specifically for JEE and NEET aspirants. It operates entirely inside the browser without
-            requiring an active internet connection, storing data locally via IndexedDB. Aspirants
-            can seamlessly organize daily schedules, execute 4-stage revision cycles, and log
-            focused preparation hours with zero latency or subscription paywalls.
-          </p>
-        </section>
-
-        <section class="seo-answer-block">
-          <h2>JEE &amp; NEET Syllabus Coverage &amp; Revision Tracking</h2>
-          <p>
-            OJEET Tracker provides comprehensive syllabus tracking across 90+ PCM chapters and 450+
-            subtopics aligned with official NTA JEE and NEET UG curricula. Aspirants monitor
-            granular completion statuses, track topic confidence ratings, and schedule 4-stage
-            revision cycles across Physics, Chemistry, and Mathematics, ensuring systematic
-            preparation without relying on fragmented spreadsheets or manual checklists.
-          </p>
-        </section>
-
-        <section class="seo-comparison-section">
-          <h2>Feature Comparison: OJEET Tracker vs Excel vs Notion vs YPT</h2>
-          <p>
-            Compare how OJEET Tracker performs against generic spreadsheets, note-taking apps, and
-            dedicated timer tools for competitive JEE and NEET preparation:
-          </p>
-          <div class="comparison-table-wrapper">
-            <table class="comparison-table">
-              <caption class="sr-only">
-                Feature comparison of OJEET Tracker against Excel, Notion, and YPT for JEE and NEET
-                preparation
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Feature / Dimension</th>
-                  <th scope="col" class="col-highlight">OJEET Tracker</th>
-                  <th scope="col">Generic Spreadsheets (Excel)</th>
-                  <th scope="col">Note-Taking Apps (Notion)</th>
-                  <th scope="col">Timer Apps (YPT)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Pre-Loaded Syllabus</th>
-                  <td class="col-highlight">
-                    Built-in 90+ PCM chapters &amp; 450+ subtopics (NTA aligned)
-                  </td>
-                  <td>Manual data entry and formula setup required</td>
-                  <td>Requires finding and importing complex third-party templates</td>
-                  <td>None (study time logging only, no syllabus mapping)</td>
-                </tr>
-                <tr>
-                  <th scope="row">Offline Availability</th>
-                  <td class="col-highlight">
-                    100% Offline-first (IndexedDB &amp; PWA, zero network latency)
-                  </td>
-                  <td>Offline on desktop, but cloud sync requires internet</td>
-                  <td>Limited / unreliable offline caching on web and mobile</td>
-                  <td>Requires constant active connection for groups and sync</td>
-                </tr>
-                <tr>
-                  <th scope="row">Structured Revision Cycles</th>
-                  <td class="col-highlight">
-                    Automated 4-stage revision cycles with interval tracking
-                  </td>
-                  <td>Manual date calculation or custom VBA scripts</td>
-                  <td>Manual setup using relation formulas and recurring tasks</td>
-                  <td>None (manual note taking or memory required)</td>
-                </tr>
-                <tr>
-                  <th scope="row">Integrated Study Clock</th>
-                  <td class="col-highlight">
-                    Built-in Pomodoro &amp; custom intervals tagged to chapters
-                  </td>
-                  <td>None (requires external stopwatch or mobile timer)</td>
-                  <td>None (requires third-party embedded widgets)</td>
-                  <td>Integrated stopwatch with group rankings and leaderboards</td>
-                </tr>
-                <tr>
-                  <th scope="row">Daily Planner &amp; Rollover</th>
-                  <td class="col-highlight">
-                    Dynamic calendar planner with automatic task rescheduling
-                  </td>
-                  <td>Manual row shifting and cell copying for missed targets</td>
-                  <td>Manual drag-and-drop across board or calendar views</td>
-                  <td>None (does not offer task scheduling or syllabus planning)</td>
-                </tr>
-                <tr>
-                  <th scope="row">Pricing &amp; Privacy</th>
-                  <td class="col-highlight">
-                    100% Free &amp; private (all study data stays on your device)
-                  </td>
-                  <td>Paid Microsoft 365 license or limited online tier</td>
-                  <td>Freemium with block limits and cloud privacy dependencies</td>
-                  <td>Freemium model with ads, paid tiers, and public data sharing</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="comparison-summary">
-            <strong>Verdict:</strong> While generic spreadsheets like Excel and note-taking apps
-            like Notion demand hours of manual setup, and timer apps like YPT track only passive
-            clock time, OJEET Tracker provides an integrated, offline-first workflow purpose-built
-            for JEE and NEET. With 90+ PCM chapters, 450+ subtopics, 4-stage revision cycles, and an
-            integrated study clock, aspirants stay organized without distraction.
-          </p>
-        </section>
-
-        <section class="seo-capabilities-section">
-          <h2>Core Capabilities for Serious JEE &amp; NEET Aspirants</h2>
-          <ul>
-            <li>
-              <strong>Comprehensive Syllabus Tracker:</strong> Track completion, difficulty, and
-              confidence across 90+ PCM chapters and 450+ subtopics for JEE Main, JEE Advanced, and
-              NEET UG.
-            </li>
-            <li>
-              <strong>4-Stage Systematic Revision:</strong> Scientific spaced repetition cycles
-              ensuring high retention of high-yield formulas and concepts before exam day.
-            </li>
-            <li>
-              <strong>Integrated Focus Study Clock:</strong> Pomodoro and custom interval timers
-              tagged directly to subjects and chapters for transparent accountability.
-            </li>
-            <li>
-              <strong>Adaptive Daily Study Planner:</strong> Calendar view with automatic task
-              rescheduling so missed targets rollover without manual spreadsheet edits.
-            </li>
-            <li>
-              <strong>100% Offline-First Architecture:</strong> Works seamlessly in hostels,
-              libraries, and low-connectivity environments with local device persistence and zero
-              subscription fees.
-            </li>
-          </ul>
-        </section>
-      </main>
-    </noscript>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
