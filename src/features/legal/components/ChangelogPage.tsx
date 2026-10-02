@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useSettings } from '../../../core/context/UserProgressContext';
 import { CHANGELOG_ENTRIES } from '../changelogEntries';
 
 export function ChangelogPage() {
+  const { examMode } = useSettings();
+  const dashboardPath = examMode === 'neet' ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker';
+
   return (
     <section className="legal-page">
       <div className="legal-card glass-panel">
@@ -27,7 +31,7 @@ export function ChangelogPage() {
         </div>
 
         <div className="legal-actions">
-          <Link className="action-btn outline small" to="/">
+          <Link className="action-btn outline small" to={dashboardPath}>
             Back to Dashboard
           </Link>
         </div>

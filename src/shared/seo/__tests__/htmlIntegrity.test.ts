@@ -22,4 +22,12 @@ describe('index.html SEO & Font Performance Integrity', () => {
     expect(indexHtml).not.toContain('html.js .seo-fallback');
     expect(indexHtml).not.toContain('id="seo-fallback"');
   });
+
+  it('does not contain hardcoded static canonical link in <head>', () => {
+    expect(indexHtml).not.toMatch(/<link\s+rel="canonical"/i);
+  });
+
+  it('does not contain hardcoded static og:url meta in <head>', () => {
+    expect(indexHtml).not.toMatch(/<meta\s+property="og:url"/i);
+  });
 });

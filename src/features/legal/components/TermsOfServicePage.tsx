@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useSettings } from '../../../core/context/UserProgressContext';
 
 export function TermsOfServicePage() {
+  const { examMode } = useSettings();
+  const dashboardPath = examMode === 'neet' ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker';
+
   return (
     <section className="legal-page">
       <div className="legal-card glass-panel">
@@ -21,8 +25,8 @@ export function TermsOfServicePage() {
             The app supports both Google OAuth and Email/Password authentication so you can store
             data in the cloud and access it from multiple devices. Sign-in requests only your email
             address and optional display name. When registering with email and password, passwords
-            are securely handled and hashed by Supabase Auth. No unnecessary personal data is requested
-            or stored by this app for authentication.
+            are securely handled and hashed by Supabase Auth. No unnecessary personal data is
+            requested or stored by this app for authentication.
           </p>
 
           <h2>Intended Use</h2>
@@ -60,7 +64,7 @@ export function TermsOfServicePage() {
         </div>
 
         <div className="legal-actions">
-          <Link className="action-btn outline small" to="/">
+          <Link className="action-btn outline small" to={dashboardPath}>
             Back to Dashboard
           </Link>
         </div>

@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useSettings } from '../../../core/context/UserProgressContext';
 
 export function PrivacyPolicyPage() {
+  const { examMode } = useSettings();
+  const dashboardPath = examMode === 'neet' ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker';
+
   return (
     <section className="legal-page">
       <div className="legal-card glass-panel">
@@ -21,8 +25,8 @@ export function PrivacyPolicyPage() {
           <p>
             The app stores your subject progress, tasks, study sessions, mock scores, exam dates,
             visual preferences, and optional profile settings in localStorage on your device. If you
-            sign in using Google Sign-In or Email and Password authentication, the app only
-            collects your email address and optional display name for account identification and
+            sign in using Google Sign-In or Email and Password authentication, the app only collects
+            your email address and optional display name for account identification and
             authentication purposes. Passwords are securely hashed and managed by Supabase Auth and
             are never accessible in plain text.
           </p>
@@ -30,8 +34,8 @@ export function PrivacyPolicyPage() {
           <h2>Cloud Sync and Access</h2>
           <p>
             After signing in with an authenticated account (via Google Sign-In or Email/Password),
-            your tracker data can be securely stored in the cloud so you can access it across multiple
-            devices using the same account.
+            your tracker data can be securely stored in the cloud so you can access it across
+            multiple devices using the same account.
           </p>
 
           <h2>Data Sharing</h2>
@@ -60,7 +64,7 @@ export function PrivacyPolicyPage() {
         </div>
 
         <div className="legal-actions">
-          <Link className="action-btn outline small" to="/">
+          <Link className="action-btn outline small" to={dashboardPath}>
             Back to Dashboard
           </Link>
         </div>

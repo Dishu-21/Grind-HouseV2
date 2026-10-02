@@ -228,6 +228,16 @@ describe('Edge Meta & OpenGraph Synchronization', () => {
       expect(html).toContain('https://tracker.ojeet.tech/jee-mock-scores#webpage');
     });
 
+    it('unifies root / to point to canonical /jee-syllabus-tracker and matching og:url', () => {
+      const html = generateRouteHTML('/');
+      expect(html).toContain(
+        '<link rel="canonical" href="https://tracker.ojeet.tech/jee-syllabus-tracker" />'
+      );
+      expect(html).toContain(
+        '<meta property="og:url" content="https://tracker.ojeet.tech/jee-syllabus-tracker" />'
+      );
+    });
+
     it('falls back cleanly for unrecognized routes', () => {
       const html = generateRouteHTML('/some-unknown-route');
       expect(html).toContain(

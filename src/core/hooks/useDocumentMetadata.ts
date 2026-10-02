@@ -44,7 +44,8 @@ export function useDocumentMetadata() {
 
   useEffect(() => {
     const meta = getRouteMetadata(pathname);
-    const canonicalUrl = `${BASE_URL}${pathname === '/' ? '/' : pathname}`;
+    const canonicalPath = meta.canonicalPath || pathname.replace(/\/+$/, '') || '/';
+    const canonicalUrl = `${BASE_URL}${canonicalPath}`;
 
     // Document title
     document.title = meta.title;

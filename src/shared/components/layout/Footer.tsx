@@ -31,7 +31,12 @@ export function Footer() {
         <div className="footer-main-grid">
           {/* Brand & Trust */}
           <div className="footer-brand" itemScope itemType="https://schema.org/Organization">
-            <Link to="/" className="footer-logo" title="OJEET Tracker" itemProp="url">
+            <Link
+              to={isNeet ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker'}
+              className="footer-logo"
+              title="OJEET Tracker"
+              itemProp="url"
+            >
               <span className="logo-text" itemProp="name">
                 OJEET Tracker
               </span>

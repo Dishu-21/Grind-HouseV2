@@ -49,6 +49,39 @@
       "destination": "/api/subject-prerender?subject=:subject"
     },
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(GPTBot|ChatGPT-User|PerplexityBot|ClaudeBot|anthropic-ai|Google-Extended|Bingbot|cohere-ai|OAI-SearchBot|Bytespider|Diffbot|FacebookBot|Meta-ExternalAgent|Applebot-Extended|Applebot|Googlebot|DuckDuckBot|Baiduspider|YandexBot|ia_archiver|Slurp|Discordbot|Twitterbot|facebookexternalhit|WhatsApp|LinkedInBot|TelegramBot|Slackbot|Slack-ImgProxy|Pinterest|SkypeUriPreview|vkShare).*"
+        }
+      ],
+      "destination": "/api/edge-meta?route=jee-syllabus-tracker"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "prerender",
+          "value": "true"
+        }
+      ],
+      "destination": "/api/edge-meta?route=jee-syllabus-tracker"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "format",
+          "value": "html"
+        }
+      ],
+      "destination": "/api/edge-meta?route=jee-syllabus-tracker"
+    },
+    {
       "source": "/:route(jee-mock-scores|neet-mock-scores|jee-study-planner|neet-study-planner|jee-study-timer|neet-study-timer|jee-syllabus-tracker|neet-syllabus-tracker|reports|changelog|privacy-policy|terms-of-service|import|support|community|planner|studyclock)",
       "has": [
         {
