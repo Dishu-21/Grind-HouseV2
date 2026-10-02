@@ -6,6 +6,7 @@ import {
   getRouteMetadata,
   type RouteMeta,
 } from '../../shared/seo/routeMetadata';
+import { useBreadcrumbsJsonLd } from '../../shared/seo/useBreadcrumbsJsonLd';
 
 declare global {
   interface Window {
@@ -46,6 +47,8 @@ function setCanonical(url: string) {
 
 export function useDocumentMetadata() {
   const { pathname } = useLocation();
+
+  useBreadcrumbsJsonLd(pathname);
 
   useEffect(() => {
     const normalizedPath = pathname.replace(/\/+$/, '') || '/';

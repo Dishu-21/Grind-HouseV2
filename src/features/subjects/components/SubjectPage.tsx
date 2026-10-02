@@ -22,6 +22,7 @@ import { useChapterSort } from '../hooks/useChapterSort';
 import { useTheme } from '../../../core/context/ThemeContext';
 import { MobileChapterCard } from './MobileChapterCard';
 import { ChapterDetailDrawer } from './ChapterDetailDrawer';
+import { useSubjectJsonLd } from '../../../shared/seo/useSubjectJsonLd';
 
 interface SubjectPageProps {
   subject: Subject;
@@ -76,6 +77,7 @@ export function SubjectPage({
   onRemoveSubtopic,
 }: SubjectPageProps) {
   const { accentColor } = useTheme();
+  useSubjectJsonLd(subject, data?.chapters);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [isEditing, setIsEditing] = useState(false);
 

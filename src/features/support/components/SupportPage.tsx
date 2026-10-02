@@ -7,6 +7,7 @@ import { useUserProgress } from '../../../core/context/UserProgressContext';
 import { AuthModal } from '../../../shared/components/ui/AuthModal';
 import { getDisplayName } from '../../../shared/utils/auth';
 import { loadSupportFonts } from '../utils/loadSupportFonts';
+import { FaqSection } from './FaqSection';
 
 // --- Doodles & Icons ---
 const DoodleHeart = ({
@@ -567,6 +568,8 @@ export const SupportPage: React.FC = () => {
             </p>
           </div>
         </section>
+
+        <FaqSection />
 
         <footer className="support-footer">
           {/* Hand-drawn wave separator */}
