@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../../core/context/UserProgressContext';
+import { getViewRoute } from '../../../shared/utils/navigation';
 import { CHANGELOG_ENTRIES } from '../changelogEntries';
 
 export function ChangelogPage() {
   const { examMode } = useSettings();
-  const dashboardPath = examMode === 'neet' ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker';
+  const dashboardPath = getViewRoute('dashboard', examMode === 'neet');
 
   return (
     <section className="legal-page">

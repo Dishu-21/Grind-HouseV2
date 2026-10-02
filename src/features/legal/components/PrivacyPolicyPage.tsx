@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../../core/context/UserProgressContext';
+import { getViewRoute } from '../../../shared/utils/navigation';
 
 export function PrivacyPolicyPage() {
   const { examMode } = useSettings();
-  const dashboardPath = examMode === 'neet' ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker';
+  const dashboardPath = getViewRoute('dashboard', examMode === 'neet');
 
   return (
     <section className="legal-page">

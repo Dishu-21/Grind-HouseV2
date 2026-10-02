@@ -111,4 +111,16 @@ describe('useDocumentMetadata Hook', () => {
     expect(canonical).not.toBeNull();
     expect(canonical.href).toBe(`${BASE_URL}/neet-syllabus-tracker`);
   });
+
+  it('sets self-referencing canonical tag for unmapped subpages matching the requested path', () => {
+    renderWithRouter('/invite/studygroup123');
+
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    expect(canonical).not.toBeNull();
+    expect(canonical.href).toBe(`${BASE_URL}/invite/studygroup123`);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]') as HTMLMetaElement;
+    expect(ogUrl).not.toBeNull();
+    expect(ogUrl.content).toBe(`${BASE_URL}/invite/studygroup123`);
+  });
 });

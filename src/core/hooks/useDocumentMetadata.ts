@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ROUTE_METADATA, getRouteMetadata, type RouteMeta } from '../../shared/seo/routeMetadata';
+import {
+  ROUTE_METADATA,
+  ROUTE_ALIASES,
+  getRouteMetadata,
+  type RouteMeta,
+} from '../../shared/seo/routeMetadata';
 
 declare global {
   interface Window {
@@ -43,8 +48,12 @@ export function useDocumentMetadata() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    const normalizedPath = pathname.replace(/\/+$/, '') || '/';
+    const targetPath = ROUTE_ALIASES[normalizedPath] || normalizedPath;
     const meta = getRouteMetadata(pathname);
-    const canonicalPath = meta.canonicalPath || pathname.replace(/\/+$/, '') || '/';
+    const canonicalPath =
+      ROUTE_METADATA[targetPath]?.canonicalPath ||
+      (normalizedPath === '/' ? '/jee-syllabus-tracker' : normalizedPath);
     const canonicalUrl = `${BASE_URL}${canonicalPath}`;
 
     // Document title

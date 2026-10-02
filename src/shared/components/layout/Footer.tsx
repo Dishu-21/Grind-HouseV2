@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { DiscordIcon } from '../ui/DiscordInviteModal';
 import { Github, WifiOff, Code2, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useSettings } from '../../../core/context/UserProgressContext';
+import { getViewRoute } from '../../utils/navigation';
 
 export function Footer() {
   const { examMode } = useSettings();
@@ -32,7 +33,7 @@ export function Footer() {
           {/* Brand & Trust */}
           <div className="footer-brand" itemScope itemType="https://schema.org/Organization">
             <Link
-              to={isNeet ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker'}
+              to={getViewRoute('dashboard', isNeet)}
               className="footer-logo"
               title="OJEET Tracker"
               itemProp="url"
@@ -66,11 +67,7 @@ export function Footer() {
               itemScope
               itemType="https://schema.org/SiteNavigationElement"
             >
-              <Link
-                to={isNeet ? '/neet-syllabus-tracker' : '/jee-syllabus-tracker'}
-                className="bottom-link"
-                itemProp="url"
-              >
+              <Link to={getViewRoute('dashboard', isNeet)} className="bottom-link" itemProp="url">
                 Dashboard
               </Link>
               <Link
