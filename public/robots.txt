@@ -10,6 +10,9 @@ User-agent: anthropic-ai
 User-agent: Google-Extended
 User-agent: Bingbot
 Allow: /
+Disallow: /import
+Disallow: /invite/
+Disallow: /api/
 
 # Bulk non-citing training scrapers (disallowed)
 User-agent: CCBot
@@ -18,5 +21,8 @@ Disallow: /
 # General web crawlers (allowed)
 User-agent: *
 Allow: /
+Disallow: /import
+Disallow: /invite/
+Disallow: /api/
 
 Sitemap: https://tracker.ojeet.tech/sitemap.xml
