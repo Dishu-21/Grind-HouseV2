@@ -1,3 +1,33 @@
+# [3.8.0](https://github.com/Namankatiyar/ojeet-tracker/compare/v3.7.0...v3.8.0) (2026-10-02)
+
+
+### Bug Fixes
+
+* **seo:** decouple onboarding gate from AppRoutes to unblock crawlers and deep links ([ad351fe](https://github.com/Namankatiyar/ojeet-tracker/commit/ad351fec6d92c021d5d4e240b6ee3a17d65099cb))
+* **seo:** eliminate FOUC by encapsulating fallback in noscript with native boot loader ([7988a6f](https://github.com/Namankatiyar/ojeet-tracker/commit/7988a6ff20904d5f04811218dbd9bb71530c3422))
+* **seo:** resolve canonical URL conflicts and establish unified dashboard routing ([d479c0e](https://github.com/Namankatiyar/ojeet-tracker/commit/d479c0e7f9e50496096905d0dc024156c9eab1a3)), closes [#35](https://github.com/Namankatiyar/ojeet-tracker/issues/35)
+* **seo:** update robots.txt exclusions and comprehensive sitemap.xml with lastmod dates ([c81f4f7](https://github.com/Namankatiyar/ojeet-tracker/commit/c81f4f7d1a9d0a51cf302a83819da575c4cb8a4d))
+* **ui:** eliminate white viewport borders during boot loader display ([4e6f742](https://github.com/Namankatiyar/ojeet-tracker/commit/4e6f742b1f03e8b0ec5b2589a20b7ba7e3d3bdf6))
+* **ui:** preserve dotted grid background by scoping bootloader styles ([d8e0654](https://github.com/Namankatiyar/ojeet-tracker/commit/d8e0654850abb6d00717daf895b1fc2968107819))
+
+
+### Features
+
+* **ai-seo:** add AI crawler governance, llms.txt, pricing.md, and sitemap lastmod timestamps ([34731c0](https://github.com/Namankatiyar/ojeet-tracker/commit/34731c09713a9e93defe1642bc07e8e22d2ca8eb)), closes [#26](https://github.com/Namankatiyar/ojeet-tracker/issues/26)
+* **ai-seo:** add FAQPage and educational knowledge graph structured data ([b749081](https://github.com/Namankatiyar/ojeet-tracker/commit/b749081892b92bc824664158cf8196aa5de27e41)), closes [#27](https://github.com/Namankatiyar/ojeet-tracker/issues/27)
+* **ai-seo:** add semantic answer blocks and tool comparison matrix ([a2d247f](https://github.com/Namankatiyar/ojeet-tracker/commit/a2d247f80fa1dbe56dce139f05135a479c729c40)), closes [#28](https://github.com/Namankatiyar/ojeet-tracker/issues/28)
+* **ai-seo:** edge bot prerendering & markdown content negotiation for syllabus routes ([4dc2d66](https://github.com/Namankatiyar/ojeet-tracker/commit/4dc2d66394d88bda1db3134396de69219be1a8b1)), closes [#29](https://github.com/Namankatiyar/ojeet-tracker/issues/29)
+* **ai-seo:** route-specific dynamic OpenGraph & meta tag edge synchronization ([c4e1103](https://github.com/Namankatiyar/ojeet-tracker/commit/c4e1103411495b0b79a020ce611bb2bb4f54a704)), closes [#30](https://github.com/Namankatiyar/ojeet-tracker/issues/30)
+* **seo:** complete route metadata, optimize SERP title lengths, and add visible H1 headings ([69e8660](https://github.com/Namankatiyar/ojeet-tracker/commit/69e8660aabff1db0dd7627f7520b4dbd2594c4d5))
+* **seo:** implement JSON-LD BreadcrumbList, Syllabus ItemList, and FAQPage schemas ([ecfd7a4](https://github.com/Namankatiyar/ojeet-tracker/commit/ecfd7a4fcfd01f7a13122c5d55575cebab134e49))
+* **seo:** replace button navigation and subject cards with crawlable Link components ([122ae19](https://github.com/Namankatiyar/ojeet-tracker/commit/122ae19e32c19f4c16e902829a873af45e4fb1a4)), closes [#32](https://github.com/Namankatiyar/ojeet-tracker/issues/32)
+
+
+### Performance Improvements
+
+* **seo:** compress onboarding and bot images to WebP to improve Core Web Vitals LCP ([d5cc745](https://github.com/Namankatiyar/ojeet-tracker/commit/d5cc74575db4839bf8f8ab7e3cb981d93d1cc1ab)), closes [#34](https://github.com/Namankatiyar/ojeet-tracker/issues/34)
+* **seo:** remove hidden text anti-pattern and purge render-blocking unused fonts ([0e94cc5](https://github.com/Namankatiyar/ojeet-tracker/commit/0e94cc53154e4634e889c9a3ef27348e2d5ba000)), closes [#33](https://github.com/Namankatiyar/ojeet-tracker/issues/33)
+
 # [3.7.0](https://github.com/Namankatiyar/ojeet-tracker/compare/v3.6.0...v3.7.0) (2026-09-27)
 
 
