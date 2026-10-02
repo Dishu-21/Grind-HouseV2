@@ -176,7 +176,14 @@ function MessageBubble({ message, onConfirm, onCancel }: BubbleProps) {
     return (
       <div className="chat-bubble-row">
         <div className="chat-bubble-avatar chat-bubble-avatar--aria">
-          <img src="/blueBot.png" alt="Blue" className="chat-avatar-img" />
+          <img
+            src="/blueBot.webp"
+            alt="Blue"
+            className="chat-avatar-img"
+            width={26}
+            height={26}
+            loading="lazy"
+          />
         </div>
         <div className="chat-bubble-container">
           <ConfirmCard
@@ -196,7 +203,14 @@ function MessageBubble({ message, onConfirm, onCancel }: BubbleProps) {
     <div className={`chat-bubble-row ${isUser ? 'chat-bubble-row--user' : ''}`}>
       {!isUser && (
         <div className="chat-bubble-avatar chat-bubble-avatar--aria">
-          <img src="/blueBot.png" alt="Blue" className="chat-avatar-img" />
+          <img
+            src="/blueBot.webp"
+            alt="Blue"
+            className="chat-avatar-img"
+            width={26}
+            height={26}
+            loading="lazy"
+          />
         </div>
       )}
       <div className="chat-bubble-container">
@@ -450,12 +464,19 @@ function ChatDrawerModal({ onClose, isMobile }: ChatDrawerModalProps) {
         initial={isMobile ? { y: '100%', x: 0 } : { x: '100%', y: 0 }}
         animate={{ x: 0, y: 0 }}
         exit={isMobile ? { y: '100%', x: 0 } : { x: '100%', y: 0 }}
-        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 28 }}
       >
         {/* Header */}
         <div className="chat-header">
           <div className="chat-header-avatar">
-            <img src="/blueBot.png" alt="Blue" className="chat-avatar-img" />
+            <img
+              src="/blueBot.webp"
+              alt="Blue"
+              className="chat-avatar-img"
+              width={32}
+              height={32}
+              loading="lazy"
+            />
           </div>
           <div className="chat-header-info">
             <div className="chat-header-name">
@@ -619,7 +640,14 @@ function ChatDrawerModal({ onClose, isMobile }: ChatDrawerModalProps) {
                   <>
                     <div className="chat-welcome-card glass-panel">
                       <div className="chat-welcome-avatar">
-                        <img src="/blueBot.png" alt="Blue" className="chat-avatar-img" />
+                        <img
+                          src="/blueBot.webp"
+                          alt="Blue"
+                          className="chat-avatar-img"
+                          width={48}
+                          height={48}
+                          loading="lazy"
+                        />
                       </div>
                       <h2>Hello, I'm Blue</h2>
                       <p className="chat-welcome-desc">
@@ -731,7 +759,13 @@ export function ChatDrawer() {
           title="AI Study Assistant"
         >
           <span className="chat-fab-icon">
-            <img src="/blueBot.png" alt="Blue" className="chat-avatar-img" />
+            <img
+              src="/blueBot.webp"
+              alt="Blue"
+              className="chat-avatar-img"
+              width={58}
+              height={58}
+            />
           </span>
           {!tooltipDismissed && (
             <div

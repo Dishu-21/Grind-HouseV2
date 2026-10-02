@@ -87,7 +87,7 @@ function getYouTubePlaylistId(url: string): string | null {
 async function fetchYouTubePlaylistTracks(playlistId: string, apiKey: string): Promise<Track[]> {
   const tracks: Track[] = [];
   let nextPageToken = '';
-  
+
   do {
     const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${apiKey}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
     const response = await fetch(url);
@@ -95,7 +95,9 @@ async function fetchYouTubePlaylistTracks(playlistId: string, apiKey: string): P
       const errData = await response.json().catch(() => ({}));
       const reason = errData?.error?.errors?.[0]?.reason;
       if (response.status === 404 || reason === 'playlistNotFound' || response.status === 400) {
-        throw new Error('YouTube playlist not found. Please verify the URL and ensure the playlist is public.');
+        throw new Error(
+          'YouTube playlist not found. Please verify the URL and ensure the playlist is public.'
+        );
       }
       const errMsg = errData?.error?.message || `HTTP error! status: ${response.status}`;
       throw new Error(errMsg);
@@ -117,17 +119,35 @@ async function fetchYouTubePlaylistTracks(playlistId: string, apiKey: string): P
     }
     nextPageToken = data.nextPageToken || '';
   } while (nextPageToken);
-  
+
   return tracks;
 }
 
 /** Source logo icon for YouTube / Spotify */
 function SourceIcon({ type }: { type: Track['type'] }) {
   if (type === 'youtube') {
-    return <img className="music-source-icon" src="/yotube.png" alt="YouTube" />;
+    return (
+      <img
+        className="music-source-icon"
+        src="/yotube.png"
+        alt="YouTube"
+        width={16}
+        height={16}
+        loading="lazy"
+      />
+    );
   }
   if (type === 'spotify') {
-    return <img className="music-source-icon" src="/spotify.png" alt="Spotify" />;
+    return (
+      <img
+        className="music-source-icon"
+        src="/spotify.png"
+        alt="Spotify"
+        width={16}
+        height={16}
+        loading="lazy"
+      />
+    );
   }
   if (type === 'local') {
     return <HardDrive size={14} className="music-source-icon-fallback" />;
@@ -144,9 +164,7 @@ function FluidWaveform({ paused, small }: { paused?: boolean; small?: boolean })
   ];
 
   return (
-    <div
-      className={`music-waveform ${small ? 'music-waveform--small' : ''}`}
-    >
+    <div className={`music-waveform ${small ? 'music-waveform--small' : ''}`}>
       {bars.map((bar) => (
         <motion.span
           key={bar.id}
@@ -564,332 +582,357 @@ export function MusicPlayerDrawer() {
               exit={isMobile ? { y: '100%', x: 0 } : { x: '-100%', y: 0 }}
               transition={{ type: 'spring', duration: 0.6, bounce: 0 }}
             >
-        {/* ─── Header ─────────────────────────────────────── */}
-        <div className="music-header">
-          <div className="music-header-title">
-            <img className="music-header-icon" src="/musicBot.png" alt="Music" />
-            Music player
-          </div>
-          <button className="music-close-btn" onClick={handleClose} aria-label="Close music player">
-            <X size={14} />
-          </button>
-        </div>
-
-        {/* ─── Playlists Header ───────────────────────────── */}
-        <div className="music-section-header">
-          <span className="music-section-label">Playlists · {playlists.length}</span>
-          <button
-            className={`music-playlist-action-btn music-playlist-action-btn--accent ${showCreatePlaylist ? 'music-playlist-action-btn--toggled' : ''}`}
-            onClick={() => setShowCreatePlaylist((prev) => !prev)}
-            title="Create playlist"
-            aria-label="Create new playlist"
-          >
-            <Plus size={14} />
-          </button>
-        </div>
-
-        {/* ─── Collapsible Create Playlist ────────────────── */}
-        <AnimatePresence initial={false}>
-          {showCreatePlaylist && (
-            <motion.div
-              className="music-create-playlist"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div className="music-create-playlist-inner">
-                <input
-                  ref={createInputRef}
-                  type="text"
-                  placeholder="Playlist name"
-                  value={newPlaylistName}
-                  onChange={(e) => setNewPlaylistName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAddPlaylist()}
-                />
+              {/* ─── Header ─────────────────────────────────────── */}
+              <div className="music-header">
+                <div className="music-header-title">
+                  <img
+                    className="music-header-icon"
+                    src="/musicBot.webp"
+                    alt="Music"
+                    width={18}
+                    height={18}
+                    loading="lazy"
+                  />
+                  Music player
+                </div>
                 <button
-                  className="music-create-btn"
-                  onClick={handleAddPlaylist}
-                  disabled={!newPlaylistName.trim()}
+                  className="music-close-btn"
+                  onClick={handleClose}
+                  aria-label="Close music player"
                 >
-                  Create
+                  <X size={14} />
                 </button>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
-        {/* ─── Playlist Bar ───────────────────────────────── */}
-        <div className="music-playlist-bar">
-          <CustomSelect
-            value={activePlaylistId}
-            options={playlistOptions}
-            onChange={(val) => {
-              setActivePlaylistId(val);
-              setCurrentTrackIndex(0);
-              setPlaying(false);
-            }}
-          />
-          <button
-            className="music-playlist-action-btn music-playlist-action-btn--danger"
-            onClick={handleDeletePlaylist}
-            disabled={playlists.length <= 1}
-            title="Delete playlist"
-            aria-label="Delete current playlist"
-          >
-            <Trash2 size={14} />
-          </button>
-        </div>
+              {/* ─── Playlists Header ───────────────────────────── */}
+              <div className="music-section-header">
+                <span className="music-section-label">Playlists · {playlists.length}</span>
+                <button
+                  className={`music-playlist-action-btn music-playlist-action-btn--accent ${showCreatePlaylist ? 'music-playlist-action-btn--toggled' : ''}`}
+                  onClick={() => setShowCreatePlaylist((prev) => !prev)}
+                  title="Create playlist"
+                  aria-label="Create new playlist"
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
 
-
-
-        {/* ─── Track List Header + Add button ────────────── */}
-        <div className="music-section-header">
-          <span className="music-section-label">Tracks · {activePlaylist.tracks.length}</span>
-          <button
-            className={`music-playlist-action-btn music-playlist-action-btn--accent ${showAddTrack ? 'music-playlist-action-btn--toggled' : ''}`}
-            onClick={() => setShowAddTrack((prev) => !prev)}
-            title="Add track"
-            aria-label="Add new track"
-          >
-            <Plus size={14} />
-          </button>
-        </div>
-
-        {/* ─── Collapsible Add Track ───────────────────────── */}
-        <AnimatePresence initial={false}>
-          {showAddTrack && (
-            <motion.div
-              className="music-add-track-collapse"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div className="music-add-track-inner">
-                {resolutionError && (
-                  <div className="music-error-banner">
-                    {resolutionError}
-                  </div>
-                )}
-                <input
-                  type="text"
-                  placeholder="Track name (optional)"
-                  value={newTrackTitle}
-                  onChange={(e) => setNewTrackTitle(e.target.value)}
-                  disabled={isResolvingPlaylist}
-                />
-                <div className="music-add-track-url-row">
-                  <input
-                    ref={addTrackUrlRef}
-                    type="text"
-                    placeholder="YouTube or Spotify URL"
-                    value={newTrackUrl}
-                    onChange={(e) => setNewTrackUrl(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && !isResolvingPlaylist && handleAddTrack()}
-                    disabled={isResolvingPlaylist}
-                  />
-                  <button
-                    className="music-create-btn"
-                    onClick={handleAddTrack}
-                    disabled={!newTrackUrl.trim() || isResolvingPlaylist}
+              {/* ─── Collapsible Create Playlist ────────────────── */}
+              <AnimatePresence initial={false}>
+                {showCreatePlaylist && (
+                  <motion.div
+                    className="music-create-playlist"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    style={{ overflow: 'hidden' }}
                   >
-                    {isResolvingPlaylist ? (
-                      <>
-                        <Loader2 size={14} className="music-spinner" />
-                        <span>Resolving...</span>
-                      </>
-                    ) : (
-                      'Add'
-                    )}
-                  </button>
-                </div>
+                    <div className="music-create-playlist-inner">
+                      <input
+                        ref={createInputRef}
+                        type="text"
+                        placeholder="Playlist name"
+                        value={newPlaylistName}
+                        onChange={(e) => setNewPlaylistName(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleAddPlaylist()}
+                      />
+                      <button
+                        className="music-create-btn"
+                        onClick={handleAddPlaylist}
+                        disabled={!newPlaylistName.trim()}
+                      >
+                        Create
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-                <div className="music-add-track-divider">
-                  <span>or</span>
-                </div>
-
-                <div
-                  className="music-local-upload-zone"
-                  onDragOver={(e) => !isResolvingPlaylist && e.preventDefault()}
-                  onDrop={(e) => !isResolvingPlaylist && handleFileDrop(e)}
-                  style={isResolvingPlaylist ? { opacity: 0.5, pointerEvents: 'none' } : undefined}
-                >
-                  <input
-                    type="file"
-                    accept="audio/*"
-                    id="music-local-upload"
-                    onChange={handleFileInput}
-                    style={{ display: 'none' }}
-                    disabled={isResolvingPlaylist}
-                  />
-                  <label htmlFor="music-local-upload" className="music-local-upload-label">
-                    {isSavingLocal ? (
-                      <>
-                        <Loader2 size={16} className="music-spinner" />
-                        <span>Saving to device...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Upload size={16} />
-                        <span>Click or drag audio file here</span>
-                        <span className="music-upload-hint">Works offline</span>
-                      </>
-                    )}
-                  </label>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* ─── Track List ─────────────────────────────────── */}
-        <div className="music-track-list">
-          {activePlaylist.tracks.length === 0 ? (
-            <div className="music-empty-state">
-              <div className="music-empty-state-icon">
-                <Music size={20} />
-              </div>
-              <div className="music-empty-state-text">No tracks yet</div>
-              <div className="music-empty-state-hint">
-                Tap <strong>+</strong> above to add a YouTube or Spotify URL
-              </div>
-            </div>
-          ) : (
-            activePlaylist.tracks.map((track, idx) => {
-              const isActive = idx === currentTrackIndex;
-              return (
-                <div
-                  key={track.id}
-                  className={`music-track-item ${isActive ? 'music-track-item--active' : ''}`}
-                  onClick={() => {
-                    setCurrentTrackIndex(idx);
-                    setPlaying(true);
+              {/* ─── Playlist Bar ───────────────────────────────── */}
+              <div className="music-playlist-bar">
+                <CustomSelect
+                  value={activePlaylistId}
+                  options={playlistOptions}
+                  onChange={(val) => {
+                    setActivePlaylistId(val);
+                    setCurrentTrackIndex(0);
+                    setPlaying(false);
                   }}
+                />
+                <button
+                  className="music-playlist-action-btn music-playlist-action-btn--danger"
+                  onClick={handleDeletePlaylist}
+                  disabled={playlists.length <= 1}
+                  title="Delete playlist"
+                  aria-label="Delete current playlist"
                 >
-                  <span className="music-track-number">
-                    {isActive && playing ? <FluidWaveform paused={isBuffering} small /> : idx + 1}
-                  </span>
-                  <span className="music-track-title">{track.title}</span>
-                  <SourceIcon type={track.type} />
-                  <div className="music-track-actions">
+                  <Trash2 size={14} />
+                </button>
+              </div>
+
+              {/* ─── Track List Header + Add button ────────────── */}
+              <div className="music-section-header">
+                <span className="music-section-label">Tracks · {activePlaylist.tracks.length}</span>
+                <button
+                  className={`music-playlist-action-btn music-playlist-action-btn--accent ${showAddTrack ? 'music-playlist-action-btn--toggled' : ''}`}
+                  onClick={() => setShowAddTrack((prev) => !prev)}
+                  title="Add track"
+                  aria-label="Add new track"
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+
+              {/* ─── Collapsible Add Track ───────────────────────── */}
+              <AnimatePresence initial={false}>
+                {showAddTrack && (
+                  <motion.div
+                    className="music-add-track-collapse"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div className="music-add-track-inner">
+                      {resolutionError && (
+                        <div className="music-error-banner">{resolutionError}</div>
+                      )}
+                      <input
+                        type="text"
+                        placeholder="Track name (optional)"
+                        value={newTrackTitle}
+                        onChange={(e) => setNewTrackTitle(e.target.value)}
+                        disabled={isResolvingPlaylist}
+                      />
+                      <div className="music-add-track-url-row">
+                        <input
+                          ref={addTrackUrlRef}
+                          type="text"
+                          placeholder="YouTube or Spotify URL"
+                          value={newTrackUrl}
+                          onChange={(e) => setNewTrackUrl(e.target.value)}
+                          onKeyDown={(e) =>
+                            e.key === 'Enter' && !isResolvingPlaylist && handleAddTrack()
+                          }
+                          disabled={isResolvingPlaylist}
+                        />
+                        <button
+                          className="music-create-btn"
+                          onClick={handleAddTrack}
+                          disabled={!newTrackUrl.trim() || isResolvingPlaylist}
+                        >
+                          {isResolvingPlaylist ? (
+                            <>
+                              <Loader2 size={14} className="music-spinner" />
+                              <span>Resolving...</span>
+                            </>
+                          ) : (
+                            'Add'
+                          )}
+                        </button>
+                      </div>
+
+                      <div className="music-add-track-divider">
+                        <span>or</span>
+                      </div>
+
+                      <div
+                        className="music-local-upload-zone"
+                        onDragOver={(e) => !isResolvingPlaylist && e.preventDefault()}
+                        onDrop={(e) => !isResolvingPlaylist && handleFileDrop(e)}
+                        style={
+                          isResolvingPlaylist ? { opacity: 0.5, pointerEvents: 'none' } : undefined
+                        }
+                      >
+                        <input
+                          type="file"
+                          accept="audio/*"
+                          id="music-local-upload"
+                          onChange={handleFileInput}
+                          style={{ display: 'none' }}
+                          disabled={isResolvingPlaylist}
+                        />
+                        <label htmlFor="music-local-upload" className="music-local-upload-label">
+                          {isSavingLocal ? (
+                            <>
+                              <Loader2 size={16} className="music-spinner" />
+                              <span>Saving to device...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Upload size={16} />
+                              <span>Click or drag audio file here</span>
+                              <span className="music-upload-hint">Works offline</span>
+                            </>
+                          )}
+                        </label>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* ─── Track List ─────────────────────────────────── */}
+              <div className="music-track-list">
+                {activePlaylist.tracks.length === 0 ? (
+                  <div className="music-empty-state">
+                    <div className="music-empty-state-icon">
+                      <Music size={20} />
+                    </div>
+                    <div className="music-empty-state-text">No tracks yet</div>
+                    <div className="music-empty-state-hint">
+                      Tap <strong>+</strong> above to add a YouTube or Spotify URL
+                    </div>
+                  </div>
+                ) : (
+                  activePlaylist.tracks.map((track, idx) => {
+                    const isActive = idx === currentTrackIndex;
+                    return (
+                      <div
+                        key={track.id}
+                        className={`music-track-item ${isActive ? 'music-track-item--active' : ''}`}
+                        onClick={() => {
+                          setCurrentTrackIndex(idx);
+                          setPlaying(true);
+                        }}
+                      >
+                        <span className="music-track-number">
+                          {isActive && playing ? (
+                            <FluidWaveform paused={isBuffering} small />
+                          ) : (
+                            idx + 1
+                          )}
+                        </span>
+                        <span className="music-track-title">{track.title}</span>
+                        <SourceIcon type={track.type} />
+                        <div className="music-track-actions">
+                          <button
+                            className="music-track-delete-btn"
+                            onClick={(e) => handleDeleteTrack(track.id, e)}
+                            aria-label={`Delete ${track.title}`}
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* ─── Now Playing (compact row) ──────────────────── */}
+              {currentTrack && (
+                <div className="music-now-playing">
+                  <FluidWaveform paused={!playing || isBuffering} small />
+                  <span className="music-now-playing-title">{currentTrack.title}</span>
+                  <SourceIcon type={currentTrack.type} />
+                </div>
+              )}
+
+              {/* ─── Spotify Embedded Player ─────────────────────── */}
+              {currentTrack && isSpotify && showSpotifyEmbed && (
+                <div className="music-spotify-embed">
+                  <div className="music-spotify-header">
+                    <span className="music-spotify-title">Spotify Playback</span>
                     <button
-                      className="music-track-delete-btn"
-                      onClick={(e) => handleDeleteTrack(track.id, e)}
-                      aria-label={`Delete ${track.title}`}
+                      className="music-spotify-close-btn"
+                      onClick={() => {
+                        setPlaying(false);
+                        setShowSpotifyEmbed(false);
+                      }}
+                      aria-label="Close Spotify player"
+                      title="Close player"
                     >
-                      <Trash2 size={12} />
+                      <X size={14} />
+                    </button>
+                  </div>
+                  <iframe
+                    src={getSpotifyEmbedUrl(currentTrack.url)}
+                    width="100%"
+                    height="352"
+                    frameBorder="0"
+                    allowFullScreen
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+
+              {/* ─── Player Dock ─────────────────────────────────── */}
+              {(!isSpotify || !currentTrack || !showSpotifyEmbed) && (
+                <div className="music-dock">
+                  <div className="music-dock-row">
+                    {/* Volume — left side, upward popup slider */}
+                    <div className="music-dock-volume">
+                      <button
+                        className="music-dock-btn"
+                        onClick={() => setMuted(!muted)}
+                        aria-label="Toggle mute"
+                      >
+                        {muted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                      </button>
+                      <div className="music-dock-volume-popup">
+                        <input
+                          type="range"
+                          min={0}
+                          max={1}
+                          step="any"
+                          value={muted ? 0 : volume}
+                          onChange={handleVolumeChange}
+                          className="music-volume-slider"
+                          aria-label="Volume"
+                          style={
+                            {
+                              '--volume-fill': `${(muted ? 0 : volume) * 100}%`,
+                            } as React.CSSProperties
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    {/* Centered playback controls */}
+                    <div className="music-dock-center">
+                      <button
+                        className="music-dock-btn"
+                        onClick={handlePrev}
+                        disabled={!currentTrack}
+                      >
+                        <SkipBack size={18} />
+                      </button>
+                      <button
+                        className="music-dock-play"
+                        onClick={handlePlayPause}
+                        disabled={!currentTrack}
+                      >
+                        {isBuffering ? (
+                          <Loader2 size={20} className="music-spinner" />
+                        ) : playing ? (
+                          <Pause size={20} fill="currentColor" />
+                        ) : (
+                          <Play size={20} fill="currentColor" />
+                        )}
+                      </button>
+                      <button
+                        className="music-dock-btn"
+                        onClick={handleNext}
+                        disabled={!currentTrack}
+                      >
+                        <SkipForward size={18} />
+                      </button>
+                    </div>
+
+                    {/* Repeat — right side */}
+                    <button
+                      className={`music-dock-btn ${loop ? 'music-dock-btn--active' : ''}`}
+                      onClick={() => setLoop(!loop)}
+                    >
+                      <Repeat size={16} />
                     </button>
                   </div>
                 </div>
-              );
-            })
-          )}
-        </div>
-
-        {/* ─── Now Playing (compact row) ──────────────────── */}
-        {currentTrack && (
-          <div className="music-now-playing">
-            <FluidWaveform paused={!playing || isBuffering} small />
-            <span className="music-now-playing-title">{currentTrack.title}</span>
-            <SourceIcon type={currentTrack.type} />
-          </div>
-        )}
-
-        {/* ─── Spotify Embedded Player ─────────────────────── */}
-        {currentTrack && isSpotify && showSpotifyEmbed && (
-          <div className="music-spotify-embed">
-            <div className="music-spotify-header">
-              <span className="music-spotify-title">Spotify Playback</span>
-              <button
-                className="music-spotify-close-btn"
-                onClick={() => {
-                  setPlaying(false);
-                  setShowSpotifyEmbed(false);
-                }}
-                aria-label="Close Spotify player"
-                title="Close player"
-              >
-                <X size={14} />
-              </button>
-            </div>
-            <iframe
-              src={getSpotifyEmbedUrl(currentTrack.url)}
-              width="100%"
-              height="352"
-              frameBorder="0"
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            />
-          </div>
-        )}
-
-        {/* ─── Player Dock ─────────────────────────────────── */}
-        {(!isSpotify || !currentTrack || !showSpotifyEmbed) && (
-          <div className="music-dock">
-            <div className="music-dock-row">
-              {/* Volume — left side, upward popup slider */}
-              <div className="music-dock-volume">
-                <button
-                  className="music-dock-btn"
-                  onClick={() => setMuted(!muted)}
-                  aria-label="Toggle mute"
-                >
-                  {muted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                </button>
-                <div className="music-dock-volume-popup">
-                  <input
-                    type="range"
-                    min={0}
-                    max={1}
-                    step="any"
-                    value={muted ? 0 : volume}
-                    onChange={handleVolumeChange}
-                    className="music-volume-slider"
-                    aria-label="Volume"
-                    style={
-                      { '--volume-fill': `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties
-                    }
-                  />
-                </div>
-              </div>
-
-              {/* Centered playback controls */}
-              <div className="music-dock-center">
-                <button className="music-dock-btn" onClick={handlePrev} disabled={!currentTrack}>
-                  <SkipBack size={18} />
-                </button>
-                <button
-                  className="music-dock-play"
-                  onClick={handlePlayPause}
-                  disabled={!currentTrack}
-                >
-                  {isBuffering ? (
-                    <Loader2 size={20} className="music-spinner" />
-                  ) : playing ? (
-                    <Pause size={20} fill="currentColor" />
-                  ) : (
-                    <Play size={20} fill="currentColor" />
-                  )}
-                </button>
-                <button className="music-dock-btn" onClick={handleNext} disabled={!currentTrack}>
-                  <SkipForward size={18} />
-                </button>
-              </div>
-
-              {/* Repeat — right side */}
-              <button
-                className={`music-dock-btn ${loop ? 'music-dock-btn--active' : ''}`}
-                onClick={() => setLoop(!loop)}
-              >
-                <Repeat size={16} />
-              </button>
-            </div>
-          </div>
-        )}
+              )}
             </motion.div>
           </>
         )}
@@ -904,7 +947,7 @@ export function MusicPlayerDrawer() {
           title="Music player"
         >
           <span className="music-fab-icon">
-            <img src="/musicBot.png" alt="Music" />
+            <img src="/musicBot.webp" alt="Music" width={52} height={52} />
           </span>
           {!tooltipDismissed && (
             <div

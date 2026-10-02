@@ -58,14 +58,18 @@ framer_implementation_plan.md
 
 google59f34d5ad7f14d0c.html
 !blueBot.png
+!blueBot.webp
 !musicBot.png
+!musicBot.webp
 seo_plan.md
 !yotube.png
 !spotify.png
 !og_image.jpg
+!og_image.webp
 .env*
 !.env.example
 !onboardingImage.jpg
+!onboardingImage.webp
 
 # Agent / AI local cache & metadata
 .agents/
@@ -81,6 +85,7 @@ skills-lock.json
 graphify-out/
 CLAUDE.md
 sample.html
+diagnostics_report.md
 
 # Database CLI temp files
 supabase/.temp/

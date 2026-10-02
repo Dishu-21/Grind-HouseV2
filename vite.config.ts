@@ -116,12 +116,12 @@ export default defineConfig({
       VitePWA({
         injectRegister: false,
         registerType: 'autoUpdate',
-        includeAssets: ['logo.png', 'og_image.jpg'],
+        includeAssets: ['logo.png', 'og_image.jpg', 'og_image.webp'],
         workbox: {
           cleanupOutdatedCaches: true,
           clientsClaim: true,
           skipWaiting: true,
-          globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,json,webmanifest}'],
+          globPatterns: ['**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,json,webmanifest}'],
           runtimeCaching: [
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
