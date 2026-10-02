@@ -732,16 +732,21 @@ export function Dashboard({
 
   return (
     <motion.div className="dashboard" variants={containerVariants} initial="hidden" animate="show">
-      <h1 className="sr-only">The Ultimate Offline-First JEE & NEET Tracker for Aspirants</h1>
       {showActiveModal && <LeaderboardActiveModal onClose={handleDismissModal} />}
       <motion.div className="dashboard-header" variants={itemVariants}>
-        {quote ? (
+        <div className="dashboard-hero-title">
+          <h1 className="dashboard-h1">
+            {examMode === 'neet' ? 'NEET Syllabus Tracker' : 'JEE & NEET Syllabus Tracker'}
+          </h1>
+          <p className="dashboard-subtitle">
+            Track chapter completion, daily targets, and exam countdown
+          </p>
+        </div>
+        {quote && (
           <div className="quote-container">
             <p className="quote-text">"{quote.quote}"</p>
             <p className="quote-author">- {quote.author}</p>
           </div>
-        ) : (
-          <p className="dashboard-title">Your Progress</p>
         )}
       </motion.div>
 

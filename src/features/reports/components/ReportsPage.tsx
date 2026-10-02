@@ -53,7 +53,12 @@ export const ReportsPage: React.FC = () => {
       initial="hidden"
       animate="show"
     >
-      <h1 className="sr-only">Reports & Analysis</h1>
+      <motion.div className="reports-page-header" variants={itemVariants}>
+        <h1 className="reports-page-h1">Study Analytics & Reports</h1>
+        <p className="reports-page-subtitle">
+          Track study hours, consistency trends, and personalized revision recommendations
+        </p>
+      </motion.div>
 
       {/* Daily Study History & Analytics Dashboard */}
       <motion.div variants={itemVariants}>

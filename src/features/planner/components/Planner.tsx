@@ -158,10 +158,12 @@ export function Planner({
       initial="hidden"
       animate="show"
     >
-      <h1 className="sr-only">Interactive JEE & NEET Study Planner and Timetable App for Droppers</h1>
-      <h2 className="sr-only">
-        Weekly task manager and study calendar with auto-rescheduling for exam preparation
-      </h2>
+      <motion.div className="planner-title-bar" variants={itemVariants}>
+        <h1 className="planner-h1">Study Planner & Timetable</h1>
+        <p className="planner-subtitle">
+          Plan your revision schedule, set daily targets, and manage tasks
+        </p>
+      </motion.div>
       <motion.div className="planner-header" variants={itemVariants}>
         <div className="view-toggles">
           <button

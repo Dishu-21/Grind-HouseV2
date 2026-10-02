@@ -7,12 +7,50 @@
 
 .dashboard-header {
   text-align: center;
-  padding: 0.25rem 0;
+  padding: var(--space-2) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
 }
 
-.dashboard-header .quote-text,
+.dashboard-hero-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.dashboard-h1 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.quote-container {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.dashboard-header .quote-text {
+  font-size: var(--text-base);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
 .dashboard-header .dashboard-title {
-  font-size: 1.75rem;
+  font-size: var(--text-xl);
   font-weight: 700;
   margin-bottom: 0.2rem;
 }
@@ -839,10 +877,10 @@
 }
 
 .quote-author {
-  font-size: 1rem;
-  font-style: italic;
-  color: var(--text-secondary);
-  margin-top: 0.25rem;
+  font-size: var(--text-xs);
+  font-style: normal;
+  color: var(--text-muted);
+  margin-top: var(--space-1);
 }
 
 /* Subject Cards */
@@ -2208,9 +2246,12 @@
 }
 
 @media (max-width: 30rem) {
-  .dashboard-header .quote-text,
-  .dashboard-header .dashboard-title {
-    font-size: 1.5rem;
+  .dashboard-header .dashboard-h1 {
+    font-size: var(--text-lg);
+  }
+
+  .dashboard-header .quote-text {
+    font-size: var(--text-sm);
   }
 
   .subject-cards {

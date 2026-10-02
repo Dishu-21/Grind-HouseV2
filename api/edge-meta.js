@@ -19,7 +19,7 @@ export const ROUTE_ALIASES = {
 // Embedded route metadata as fallback if file reading fails
 export const DEFAULT_ROUTE_METADATA = {
   '/jee-syllabus-tracker': {
-    title: 'JEE & NEET Syllabus Tracker – OJEET Tracker | Study Dashboard & Planner',
+    title: 'JEE Syllabus Tracker & Study Dashboard | OJEET Tracker',
     description:
       '100% Free, offline-first JEE & NEET tracker. Seamlessly manage your daily study planner, track PCM & Biology chapter completion, utilize a built-in study clock, and sync data.',
     canonicalPath: '/jee-syllabus-tracker',
@@ -73,7 +73,7 @@ export const DEFAULT_ROUTE_METADATA = {
       'Track your NEET Biology chapter-wise preparation progress. Monitor coverage across Botany, Zoology, NCERT readings, PYQs, and study materials.',
   },
   '/jee-study-planner': {
-    title: 'JEE & NEET Study Planner & Timetable App for Droppers | OJEET Tracker',
+    title: 'JEE Study Planner & Daily Timetable | OJEET Tracker',
     description:
       'Interactive daily timetable app with rescheduling. Free study planner for JEE & NEET droppers and Class 12, weekly task manager, and progress calendar.',
     canonicalPath: '/jee-study-planner',
@@ -91,7 +91,7 @@ export const DEFAULT_ROUTE_METADATA = {
       'Free NEET study planner and timetable app for droppers & Class 12. Organize daily study schedules, track NCERT revisions, and manage task deadlines.',
   },
   '/jee-study-timer': {
-    title: 'JEE & NEET Study Timer & Pomodoro Clock | Log Hours | OJEET Tracker',
+    title: 'JEE Study Timer & Focus Pomodoro Clock | OJEET Tracker',
     description:
       'Free online digital study stopwatch for JEE & NEET aspirants. Log your study hours, track focus sessions with a pomodoro timer, and analyze your preparation time.',
     canonicalPath: '/jee-study-timer',
@@ -163,7 +163,7 @@ export const DEFAULT_ROUTE_METADATA = {
     summary: 'Import and sync your study data with OJEET Tracker.',
   },
   '/support': {
-    title: 'Support & FAQs – OJEET Tracker',
+    title: 'Support & FAQs – Aspirant Help Desk | OJEET Tracker',
     description:
       'Get help and support with OJEET Tracker. Frequently asked questions, usage guides, and feedback.',
     canonicalPath: '/support',
@@ -172,7 +172,7 @@ export const DEFAULT_ROUTE_METADATA = {
       'Get help and support with OJEET Tracker. Frequently asked questions, usage guides, and feedback.',
   },
   '/community': {
-    title: 'Community & Peer Study Groups – OJEET Tracker',
+    title: 'Aspirant Community & Peer Study Groups | OJEET Tracker',
     description:
       'Connect with fellow JEE and NEET aspirants. Share study progress, tips, and motivation.',
     canonicalPath: '/community',

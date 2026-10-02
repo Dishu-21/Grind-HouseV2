@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { useDocumentMetadata, BASE_URL } from '../useDocumentMetadata';
+import { ROUTE_METADATA } from '../../../shared/seo/routeMetadata';
 import React from 'react';
 
 describe('useDocumentMetadata Hook', () => {
@@ -12,6 +13,8 @@ describe('useDocumentMetadata Hook', () => {
     if (canonical) canonical.remove();
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.remove();
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.remove();
   });
 
   afterEach(() => {
@@ -19,6 +22,8 @@ describe('useDocumentMetadata Hook', () => {
     if (canonical) canonical.remove();
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.remove();
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.remove();
   });
 
   function renderWithRouter(initialEntry: string) {
@@ -122,5 +127,56 @@ describe('useDocumentMetadata Hook', () => {
     const ogUrl = document.querySelector('meta[property="og:url"]') as HTMLMetaElement;
     expect(ogUrl).not.toBeNull();
     expect(ogUrl.content).toBe(`${BASE_URL}/invite/studygroup123`);
+  });
+
+  it('sets dedicated title, description, and canonical tag for /reports', () => {
+    renderWithRouter('/reports');
+
+    expect(document.title).toBe(ROUTE_METADATA['/reports'].title);
+    expect(document.title).not.toBe(ROUTE_METADATA['/jee-syllabus-tracker'].title);
+
+    const desc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    expect(desc).not.toBeNull();
+    expect(desc.content).toBe(ROUTE_METADATA['/reports'].description);
+    expect(desc.content).not.toBe(ROUTE_METADATA['/jee-syllabus-tracker'].description);
+
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    expect(canonical).not.toBeNull();
+    expect(canonical.href).toBe(`${BASE_URL}/reports`);
+    expect(canonical.href).not.toBe(`${BASE_URL}/jee-syllabus-tracker`);
+  });
+
+  it('sets dedicated title, description, and canonical tag for /support', () => {
+    renderWithRouter('/support');
+
+    expect(document.title).toBe(ROUTE_METADATA['/support'].title);
+    expect(document.title).not.toBe(ROUTE_METADATA['/jee-syllabus-tracker'].title);
+
+    const desc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    expect(desc).not.toBeNull();
+    expect(desc.content).toBe(ROUTE_METADATA['/support'].description);
+    expect(desc.content).not.toBe(ROUTE_METADATA['/jee-syllabus-tracker'].description);
+
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    expect(canonical).not.toBeNull();
+    expect(canonical.href).toBe(`${BASE_URL}/support`);
+    expect(canonical.href).not.toBe(`${BASE_URL}/jee-syllabus-tracker`);
+  });
+
+  it('sets dedicated title, description, and canonical tag for /community', () => {
+    renderWithRouter('/community');
+
+    expect(document.title).toBe(ROUTE_METADATA['/community'].title);
+    expect(document.title).not.toBe(ROUTE_METADATA['/jee-syllabus-tracker'].title);
+
+    const desc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    expect(desc).not.toBeNull();
+    expect(desc.content).toBe(ROUTE_METADATA['/community'].description);
+    expect(desc.content).not.toBe(ROUTE_METADATA['/jee-syllabus-tracker'].description);
+
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    expect(canonical).not.toBeNull();
+    expect(canonical.href).toBe(`${BASE_URL}/community`);
+    expect(canonical.href).not.toBe(`${BASE_URL}/jee-syllabus-tracker`);
   });
 });

@@ -188,7 +188,7 @@ describe('Edge Meta & OpenGraph Synchronization', () => {
     it('generates route-specific OpenGraph tags for /jee-study-planner and /neet-study-planner', () => {
       const jeePlannerHtml = generateRouteHTML('/jee-study-planner');
       expect(jeePlannerHtml).toContain(
-        '<title>JEE &amp; NEET Study Planner &amp; Timetable App for Droppers | OJEET Tracker</title>'
+        '<title>JEE Study Planner &amp; Daily Timetable | OJEET Tracker</title>'
       );
       expect(jeePlannerHtml).toContain(
         '<meta property="og:url" content="https://tracker.ojeet.tech/jee-study-planner" />'
@@ -206,7 +206,7 @@ describe('Edge Meta & OpenGraph Synchronization', () => {
     it('generates route-specific OpenGraph tags for /jee-study-timer and /neet-study-timer', () => {
       const jeeTimerHtml = generateRouteHTML('/jee-study-timer');
       expect(jeeTimerHtml).toContain(
-        '<title>JEE &amp; NEET Study Timer &amp; Pomodoro Clock | Log Hours | OJEET Tracker</title>'
+        '<title>JEE Study Timer &amp; Focus Pomodoro Clock | OJEET Tracker</title>'
       );
       expect(jeeTimerHtml).toContain(
         '<meta property="og:url" content="https://tracker.ojeet.tech/jee-study-timer" />'
@@ -241,7 +241,7 @@ describe('Edge Meta & OpenGraph Synchronization', () => {
     it('falls back cleanly for unrecognized routes', () => {
       const html = generateRouteHTML('/some-unknown-route');
       expect(html).toContain(
-        '<title>JEE &amp; NEET Syllabus Tracker – OJEET Tracker | Study Dashboard &amp; Planner</title>'
+        '<title>JEE Syllabus Tracker &amp; Study Dashboard | OJEET Tracker</title>'
       );
       expect(html).toContain(
         '<link rel="canonical" href="https://tracker.ojeet.tech/jee-syllabus-tracker" />'
@@ -329,10 +329,10 @@ describe('Edge Meta & OpenGraph Synchronization', () => {
 
       expect(res.statusCode).toBe(200);
       expect(res.body).toContain(
-        'JEE &amp; NEET Study Timer &amp; Pomodoro Clock | Log Hours | OJEET Tracker'
+        'JEE Study Timer &amp; Focus Pomodoro Clock | OJEET Tracker'
       );
       expect(res.body).toContain(
-        '<meta name="twitter:title" content="JEE &amp; NEET Study Timer &amp; Pomodoro Clock | Log Hours | OJEET Tracker" />'
+        '<meta name="twitter:title" content="JEE Study Timer &amp; Focus Pomodoro Clock | OJEET Tracker" />'
       );
     });
 

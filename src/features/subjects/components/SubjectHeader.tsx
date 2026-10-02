@@ -39,7 +39,7 @@ export function SubjectHeader({
         <span className="subject-icon-large">{config.icon}</span>
         <div>
           <div className="subject-title-row">
-            <h1>{config.label}</h1>
+            <h1>{config.label} Syllabus Tracker</h1>
             {canEdit && (
               <button
                 onClick={onToggleEditing}
