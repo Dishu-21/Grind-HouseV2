@@ -43,7 +43,6 @@ interface HeaderProps {
   onAccentChange: (color: string) => void;
   useGridBackground: boolean;
   onUseGridBackgroundChange: (value: boolean) => void;
-  // New Settings Props
   disableAutoShift: boolean;
   onDisableAutoShiftChange: (value: boolean) => void;
   enableAIAgent: boolean;
@@ -60,7 +59,6 @@ interface HeaderProps {
   onGlassIntensityChange: (intensity: number) => void;
   glassRefraction: number;
   onGlassRefractionChange: (refraction: number) => void;
-  // Progress Card Props
   studySessions: StudySession[];
   mockScores: MockScore[];
   physicsProgress: number;
@@ -133,7 +131,6 @@ export function Header({
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const subjectsMenuRef = useRef<HTMLDivElement>(null);
 
-  // Manage body class for drawer open state so external FABs can adapt
   useEffect(() => {
     if (isMobileMenuOpen || isSubjectsMenuOpen) {
       document.body.classList.add('has-mobile-drawer-open');
@@ -145,7 +142,6 @@ export function Header({
     };
   }, [isMobileMenuOpen, isSubjectsMenuOpen]);
 
-  // Close on outside click for Color Picker
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (colorPickerRef.current && !colorPickerRef.current.contains(event.target as Node)) {
@@ -161,7 +157,6 @@ export function Header({
     };
   }, [isColorPickerOpen]);
 
-  // Close on outside click for Mobile Menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
@@ -205,7 +200,7 @@ export function Header({
   });
 
   const navItems: {
-    key: 'dashboard' | 'planner' | 'studyclock' | 'reports' | 'mockscores' | 'community' | Subject;
+    key: 'dashboard' | 'planner' | 'studyclock' | 'reports' | 'mockscores' | 'leaderboard' | Subject;
     label: string;
     icon: React.ReactNode;
   }[] = [
@@ -215,7 +210,7 @@ export function Header({
     { key: 'studyclock', label: 'Study Clock', icon: <Clock size={20} /> },
     { key: 'reports', label: 'Reports', icon: <BarChart2 size={20} /> },
     { key: 'mockscores', label: 'Mock Scores', icon: <Target size={20} /> },
-    { key: 'community', label: 'Community', icon: <Users size={20} /> },
+    { key: 'leaderboard', label: 'Leaderboard', icon: <Users size={20} /> },
   ];
 
   const isCustomColor = !ACCENT_COLORS.some((c) => c.value === accentColor);
@@ -397,7 +392,7 @@ export function Header({
             <CloudSyncIndicator compact onOpenSignIn={() => setIsSignInModalOpen(true)} />
           </span>
 
-          {/* Tablet/Desktop Menu Toggle (Visible only between 48rem and 64rem) */}
+          {/* Tablet/Desktop Menu Toggle */}
           <button
             className="mobile-menu-toggle"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -425,7 +420,7 @@ export function Header({
         </Link>
       </div>
 
-      {/* Mobile Bottom Navigation Bar (Visible only on widths <= 48rem) */}
+      {/* Mobile Bottom Navigation Bar */}
       {createPortal(
         <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
           <Link
