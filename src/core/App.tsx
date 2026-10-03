@@ -2,9 +2,7 @@ import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Header } from '../shared/components/layout/Header';
 import { Footer } from '../shared/components/layout/Footer';
-import { DiscordInviteModal } from '../shared/components/ui/DiscordInviteModal';
 import { ThemeOnboardingModal } from '../shared/components/ui/ThemeOnboardingModal';
-import { PasswordResetModal } from '../shared/components/ui/PasswordResetModal';
 import { TopLoader } from '../shared/components/ui/TopLoader';
 import { topLoader } from '../shared/hooks/useTopLoader';
 import { View } from '../shared/types';
@@ -19,12 +17,13 @@ import { RemoteSyncProvider } from './context/RemoteSyncContext';
 import { useGlobalShortcuts } from './hooks/useGlobalShortcuts';
 import { useDocumentMetadata } from './hooks/useDocumentMetadata';
 import { useAutoShiftTasks } from './hooks/useAutoShiftTasks';
-import { useProfileSync } from '../features/community/hooks/useProfileSync';
 
 import { AppRoutes } from './AppRoutes';
+
 const ChatDrawer = lazy(() =>
   import('../features/chat/components/ChatDrawer').then((m) => ({ default: m.ChatDrawer }))
 );
+
 const MusicPlayerDrawer = lazy(() =>
   import('../features/music/components/MusicPlayerDrawer').then((m) => ({
     default: m.MusicPlayerDrawer,
@@ -36,11 +35,6 @@ const OnboardingFlow = lazy(() =>
     default: m.OnboardingFlow,
   }))
 );
-
-function ProfileSyncManager() {
-  useProfileSync();
-  return null;
-}
 
 interface AppContentProps {
   onboardingComplete: boolean;
@@ -94,7 +88,6 @@ function AppContent({ onboardingComplete }: AppContentProps) {
   const [plannerDateToOpen, setPlannerDateToOpen] = useState<string | null>(null);
   const isNeet = examMode === 'neet';
 
-  // Determine current view from path
   const getCurrentView = (): View => {
     const path = location.pathname.substring(1);
     if (path === 'jee-syllabus-tracker' || path === 'neet-syllabus-tracker') return 'dashboard';
@@ -103,7 +96,7 @@ function AppContent({ onboardingComplete }: AppContentProps) {
     if (path === 'reports') return 'reports';
     if (path === 'jee-mock-scores' || path === 'neet-mock-scores') return 'mockscores';
     if (path === 'support') return 'support';
-    if (path === 'community') return 'community';
+    if (path === 'leaderboard') return 'leaderboard';
     return path as View;
   };
 
@@ -126,7 +119,6 @@ function AppContent({ onboardingComplete }: AppContentProps) {
     [navigate, isNeet]
   );
 
-  // Sync mode-specific routes when examMode changes
   useEffect(() => {
     const currentPath = location.pathname;
     if (isNeet) {
@@ -150,30 +142,6 @@ function AppContent({ onboardingComplete }: AppContentProps) {
     handleQuickAddTask(getLogicalTodayStr(dailyResetHour));
   }, [handleQuickAddTask, dailyResetHour]);
 
-  const [isDiscordModalOpen, setIsDiscordModalOpen] = useState(false);
-
-  useEffect(() => {
-    // Track the number of user visits (sessions) to the site
-    const isNewSession = !sessionStorage.getItem('ojee_session_active');
-    let currentVisits = parseInt(localStorage.getItem('ojee_visit_count') || '0', 10);
-
-    if (isNewSession) {
-      sessionStorage.setItem('ojee_session_active', 'true');
-      currentVisits += 1;
-      localStorage.setItem('ojee_visit_count', currentVisits.toString());
-    }
-
-    const dismissed = localStorage.getItem('ojee_discord_dismissed');
-    // Only show the modal on the second visit (or subsequent visits if not dismissed)
-    if (!dismissed && currentVisits >= 2) {
-      const timer = setTimeout(() => {
-        setIsDiscordModalOpen(true);
-      }, 3000); // 3 seconds delay
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  // Custom Hooks
   useGlobalShortcuts(handleQuickAddTask);
   useAutoShiftTasks(plannerTasks, setPlannerTasks, disableAutoShift, dailyResetHour);
   useDocumentMetadata();
@@ -181,7 +149,6 @@ function AppContent({ onboardingComplete }: AppContentProps) {
   return (
     <div className={`app ${enableAIAgent ? 'has-chat-fab' : ''}`.trim()}>
       <TopLoader />
-      <ProfileSyncManager />
       <div className="top-header-wrapper">
         <Header
           currentView={currentView}
@@ -229,10 +196,6 @@ function AppContent({ onboardingComplete }: AppContentProps) {
         />
       </main>
       <Footer />
-      <DiscordInviteModal
-        isOpen={isDiscordModalOpen}
-        onClose={() => setIsDiscordModalOpen(false)}
-      />
       {onboardingComplete && <ThemeOnboardingModal />}
       {enableAIAgent && (
         <Suspense fallback={null}>
@@ -279,7 +242,6 @@ function App() {
         <SubjectDataProvider>
           <UserProgressProvider>
             <AppShell />
-            <PasswordResetModal />
           </UserProgressProvider>
         </SubjectDataProvider>
       </RemoteAuthProvider>
