@@ -12,60 +12,66 @@ const Dashboard = lazy(() =>
     default: module.Dashboard,
   }))
 );
+
 const SubjectPage = lazy(() =>
   import('../features/subjects/components/SubjectPage').then((module) => ({
     default: module.SubjectPage,
   }))
 );
+
 const Planner = lazy(() =>
   import('../features/planner/components/Planner').then((module) => ({ default: module.Planner }))
 );
+
 const StudyClock = lazy(() =>
   import('../features/study-clock/components/StudyClock').then((module) => ({
     default: module.StudyClock,
   }))
 );
+
 const ReportsPage = lazy(() =>
   import('../features/reports/components/ReportsPage').then((module) => ({
     default: module.ReportsPage,
   }))
 );
+
 const MockScoresPage = lazy(() =>
   import('../features/mock-scores/components/MockScoresPage').then((module) => ({
     default: module.MockScoresPage,
   }))
 );
+
 const ImportSyncPage = lazy(() =>
   import('../features/sync/ImportSyncPage').then((module) => ({ default: module.ImportSyncPage }))
 );
+
 const PrivacyPolicyPage = lazy(() =>
   import('../features/legal/components/PrivacyPolicyPage').then((module) => ({
     default: module.PrivacyPolicyPage,
   }))
 );
+
 const TermsOfServicePage = lazy(() =>
   import('../features/legal/components/TermsOfServicePage').then((module) => ({
     default: module.TermsOfServicePage,
   }))
 );
+
 const ChangelogPage = lazy(() =>
   import('../features/legal/components/ChangelogPage').then((module) => ({
     default: module.ChangelogPage,
   }))
 );
+
 const SupportPage = lazy(() =>
   import('../features/support/components/SupportPage').then((module) => ({
     default: module.SupportPage,
   }))
 );
-const CommunityPage = lazy(() =>
-  import('../features/community/components/CommunityPage').then((module) => ({
-    default: module.CommunityPage,
-  }))
-);
-const InviteHandler = lazy(() =>
-  import('../features/community/components/InviteHandler').then((module) => ({
-    default: module.InviteHandler,
+
+const LeaderboardPage = lazy(() =>
+  import('../features/leaderboard/components/LeaderboardPage').then((module) => ({
+    default: module.LeaderboardPage,
   }))
 );
 
@@ -98,7 +104,9 @@ export const AppRoutes: React.FC<AppRoutesProps> = ({
     handleReorderMaterials,
     handleAddSubtopic,
     handleRemoveSubtopic,
+    handleRenameSubtopic,
   } = useSubjectData();
+
   const {
     progress,
     plannerTasks,
@@ -203,30 +211,23 @@ export const AppRoutes: React.FC<AppRoutesProps> = ({
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
-        {/* Redirects from old paths to SEO paths based on active mode */}
         <Route path="/" element={<RedirectWithHash to={defaultDashboardPath} />} />
         <Route path="/planner" element={<RedirectWithHash to={defaultPlannerPath} />} />
         <Route path="/studyclock" element={<RedirectWithHash to={defaultStudyTimerPath} />} />
 
-        {/* Dashboard Routes */}
         <Route path="/jee-syllabus-tracker" element={dashboardElement} />
         <Route path="/neet-syllabus-tracker" element={dashboardElement} />
 
-        {/* Planner Routes */}
         <Route path="/jee-study-planner" element={plannerElement} />
         <Route path="/neet-study-planner" element={plannerElement} />
 
-        {/* Study Timer Routes */}
         <Route path="/jee-study-timer" element={studyClockElement} />
         <Route path="/neet-study-timer" element={studyClockElement} />
 
         <Route path="/reports" element={<ReportsPage />} />
-
-        {/* Mock Score Routes */}
         <Route path="/jee-mock-scores" element={<MockScoresPage />} />
         <Route path="/neet-mock-scores" element={<MockScoresPage />} />
 
-        {/* Subject Routes */}
         {(['physics', 'chemistry', 'maths', 'biology'] as Subject[]).map((subject) => (
           <Route
             key={subject}
@@ -276,8 +277,7 @@ export const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
         <Route path="/changelog" element={<ChangelogPage />} />
         <Route path="/support" element={<SupportPage />} />
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/invite/:inviteCode" element={<InviteHandler />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
 
         <Route path="*" element={<RedirectWithHash to="/" />} />
       </Routes>
