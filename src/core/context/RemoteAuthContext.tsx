@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { isSupabaseConfigured, supabase } from '../../shared/lib/supabase';
-import { isUnconfirmedEmailError } from '../../shared/utils/auth';
+import { formatAuthError, isValidUsername, normalizeUsername, toSupabaseEmail } from '../../shared/utils/auth';
 
 interface RemoteAuthContextType {
   user: User | null;
@@ -14,32 +14,19 @@ interface RemoteAuthContextType {
   setPendingUnconfirmedEmail: (email: string | null) => void;
   dismissPrompt: () => void;
   resetPrompt: () => void;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
   signUpWithEmail: (
-    email: string,
+    username: string,
     password: string,
     displayName?: string
   ) => Promise<{ error: string | null; confirmationRequired: boolean }>;
-  signInWithPassword: (email: string, password: string) => Promise<{ error: string | null }>;
-  resetPassword: (email: string) => Promise<{ error: string | null }>;
+  signInWithPassword: (username: string, password: string) => Promise<{ error: string | null }>;
   updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
-  updateEmail: (
-    newEmail: string
-  ) => Promise<{ error: string | null; confirmationRequired: boolean }>;
-  resendConfirmationEmail: (email?: string) => Promise<{ error: string | null }>;
-  clearPasswordRecovery: () => void;
   signOut: () => Promise<{ error: string | null }>;
 }
 
 const SYNC_PROMPT_DISMISSED_KEY = 'ojeet-sync-prompt-dismissed';
 const PENDING_UNCONFIRMED_EMAIL_KEY = 'ojeet-pending-unconfirmed-email';
 const REMOTE_SYNC_META_PREFIX = 'ojeet-remote-sync-';
-const PROD_OAUTH_REDIRECT_URL = 'https://tracker.ojeet.tech';
-
-const getAuthRedirectUrl = () => {
-  if (typeof window === 'undefined') return PROD_OAUTH_REDIRECT_URL;
-  return window.location.origin;
-};
 
 const readPromptDismissed = () => {
   if (typeof window === 'undefined') return false;
@@ -74,59 +61,6 @@ const clearRemoteSyncMetadata = () => {
   keysToRemove.forEach((key) => localStorage.removeItem(key));
 };
 
-const cleanOAuthUrlParams = () => {
-  if (typeof window === 'undefined') return;
-  try {
-    const url = new URL(window.location.href);
-    let modified = false;
-
-    if (url.hash && url.hash.startsWith('#')) {
-      const hashParams = new URLSearchParams(url.hash.substring(1));
-      const authKeys = [
-        'access_token',
-        'refresh_token',
-        'expires_in',
-        'expires_at',
-        'token_type',
-        'provider_token',
-        'error',
-        'error_description',
-        'error_code',
-      ];
-      let hashModified = false;
-      authKeys.forEach((key) => {
-        if (hashParams.has(key)) {
-          hashParams.delete(key);
-          hashModified = true;
-        }
-      });
-      if (hashModified) {
-        const newHash = hashParams.toString();
-        url.hash = newHash ? `#${newHash}` : '';
-        modified = true;
-      }
-    }
-
-    const searchAuthKeys = ['code', 'state', 'error', 'error_description', 'error_code'];
-    let searchModified = false;
-    searchAuthKeys.forEach((key) => {
-      if (url.searchParams.has(key)) {
-        url.searchParams.delete(key);
-        searchModified = true;
-      }
-    });
-    if (searchModified) {
-      modified = true;
-    }
-
-    if (modified) {
-      window.history.replaceState(window.history.state, document.title, url.toString());
-    }
-  } catch (err) {
-    console.warn('Failed to clean OAuth URL params:', err);
-  }
-};
-
 const RemoteAuthContext = createContext<RemoteAuthContextType | undefined>(undefined);
 
 export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -154,9 +88,6 @@ export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setSession(data.session ?? null);
         setUser(data.session?.user ?? null);
         setIsLoading(false);
-        if (data.session) {
-          cleanOAuthUrlParams();
-        }
       })
       .catch((err) => {
         console.error('Failed to get session:', err);
@@ -166,15 +97,9 @@ export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession ?? null);
       setUser(nextSession?.user ?? null);
-      if (event === 'PASSWORD_RECOVERY') {
-        setIsPasswordRecovery(true);
-      }
-      if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION' || nextSession) {
-        cleanOAuthUrlParams();
-      }
     });
 
     return () => {
@@ -183,37 +108,17 @@ export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     };
   }, []);
 
-  // When user is confirmed or logged in with Google, clear any pending unconfirmed email
-  useEffect(() => {
-    if (user) {
-      const isGoogle = user.app_metadata?.provider === 'google';
-      const isConfirmed = Boolean(user.confirmed_at || user.email_confirmed_at);
-      if ((isGoogle || isConfirmed) && !user.new_email) {
-        setPendingUnconfirmedEmailState(null);
-        writePendingUnconfirmedEmail(null);
-      }
-    }
-  }, [user]);
-
   const unconfirmedEmail = useMemo(() => {
-    if (user) {
-      if (user.new_email) {
-        return user.new_email;
-      }
-      const isGoogle = user.app_metadata?.provider === 'google';
-      const isConfirmed = Boolean(user.confirmed_at || user.email_confirmed_at);
-      if (!isGoogle && !isConfirmed) {
-        return user.email || pendingUnconfirmedEmail;
-      }
-      return null;
-    }
+    if (user) return null;
     return pendingUnconfirmedEmail;
   }, [user, pendingUnconfirmedEmail]);
+
   const setPendingUnconfirmedEmail = useCallback((email: string | null) => {
     const trimmed = email && email.trim() ? email.trim() : null;
     setPendingUnconfirmedEmailState(trimmed);
     writePendingUnconfirmedEmail(trimmed);
   }, []);
+
   const dismissPrompt = useCallback(() => {
     setIsPromptDismissed(true);
     if (typeof window !== 'undefined') {
@@ -228,103 +133,116 @@ export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   }, []);
 
-  const clearPasswordRecovery = useCallback(() => {
-    setIsPasswordRecovery(false);
-  }, []);
-
-  const signInWithGoogle = useCallback(async () => {
-    if (!isSupabaseConfigured || !supabase) {
-      return { error: 'Cloud sync is not configured yet.' };
-    }
-
-    const redirectTo = getAuthRedirectUrl();
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    });
-
-    return { error: error?.message ?? null };
-  }, []);
-
   const signUpWithEmail = useCallback(
-    async (email: string, password: string, displayName?: string) => {
+    async (username: string, password: string, displayName?: string) => {
       if (!isSupabaseConfigured || !supabase) {
-        return { error: 'Cloud sync is not configured yet.', confirmationRequired: false };
+        return {
+          error: 'Cloud sync is not configured yet.',
+          confirmationRequired: false,
+        };
       }
 
-      const emailRedirectTo = getAuthRedirectUrl();
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo,
-          data: displayName ? { full_name: displayName, name: displayName } : undefined,
-        },
-      });
-
-      if (error) {
-        return { error: error.message, confirmationRequired: false };
+      const normalizedUsername = normalizeUsername(username);
+      if (!isValidUsername(normalizedUsername)) {
+        return {
+          error: 'Username must be 3–20 characters using letters, numbers, or underscores.',
+          confirmationRequired: false,
+        };
       }
 
-      const confirmationRequired = Boolean(data.user && !data.session);
-      if (confirmationRequired || (data.user && !data.user.email_confirmed_at)) {
-        const trimmedEmail = email.trim();
-        setPendingUnconfirmedEmailState(trimmedEmail);
-        writePendingUnconfirmedEmail(trimmedEmail);
+      const fakeEmail = toSupabaseEmail(normalizedUsername);
+
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email: fakeEmail,
+          password,
+          options: {
+            data: displayName ? { full_name: displayName, name: displayName } : undefined,
+          },
+        });
+
+        if (error) {
+          return {
+            error: error.message,
+            confirmationRequired: false,
+          };
+        }
+
+        const alreadyExists = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('username', normalizedUsername)
+          .maybeSingle();
+
+        if (alreadyExists.error) {
+          console.warn('Duplicate username check failed:', alreadyExists.error);
+        }
+
+        if (alreadyExists.data) {
+          return {
+            error: 'This username is already taken.',
+            confirmationRequired: false,
+          };
+        }
+
+        if (data.user) {
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .upsert(
+              {
+                id: data.user.id,
+                username: normalizedUsername,
+                total_study_minutes: 0,
+                today_study_minutes: 0,
+                syllabus_completion_percent: 0,
+                last_seen: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              },
+              { onConflict: 'id' }
+            );
+
+          if (insertError) {
+            return {
+              error: insertError.message || 'Failed to create profile.',
+              confirmationRequired: false,
+            };
+          }
+        }
+
+        return { error: null, confirmationRequired: false };
+      } catch (err: any) {
+        return {
+          error: err?.message || 'Something went wrong while creating your account.',
+          confirmationRequired: false,
+        };
       }
-      return { error: null, confirmationRequired };
     },
     []
   );
 
   const signInWithPassword = useCallback(
-    async (email: string, password: string) => {
+    async (username: string, password: string) => {
       if (!isSupabaseConfigured || !supabase) {
         return { error: 'Cloud sync is not configured yet.' };
       }
 
+      const normalizedUsername = normalizeUsername(username);
+      if (!isValidUsername(normalizedUsername)) {
+        return { error: 'Username must be 3–20 characters using letters, numbers, or underscores.' };
+      }
+
+      const fakeEmail = toSupabaseEmail(normalizedUsername);
+
       const { error } = await supabase.auth.signInWithPassword({
-        email,
+        email: fakeEmail,
         password,
       });
 
       if (error) {
-        if (isUnconfirmedEmailError(error.message)) {
-          const trimmedEmail = email.trim();
-          setPendingUnconfirmedEmailState(trimmedEmail);
-          writePendingUnconfirmedEmail(trimmedEmail);
-        }
-        return { error: error.message };
+        return { error: formatAuthError(error) };
       }
 
-      setPendingUnconfirmedEmailState(null);
-      writePendingUnconfirmedEmail(null);
       return { error: null };
-    },
-    []
-  );
-
-  const resetPassword = useCallback(
-    async (email: string) => {
-      if (!isSupabaseConfigured || !supabase) {
-        return { error: 'Cloud sync is not configured yet.' };
-      }
-
-      const redirectTo = getAuthRedirectUrl();
-
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo,
-      });
-
-      return { error: error?.message ?? null };
     },
     []
   );
@@ -342,62 +260,6 @@ export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       return { error: error?.message ?? null };
     },
     []
-  );
-
-  const updateEmail = useCallback(
-    async (newEmail: string) => {
-      if (!isSupabaseConfigured || !supabase) {
-        return { error: 'Cloud sync is not configured yet.', confirmationRequired: false };
-      }
-
-      const emailRedirectTo = getAuthRedirectUrl();
-
-      const { data, error } = await supabase.auth.updateUser(
-        { email: newEmail },
-        {
-          emailRedirectTo,
-        }
-      );
-
-      if (error) {
-        return { error: error.message, confirmationRequired: false };
-      }
-
-      const confirmationRequired = Boolean(data.user?.new_email);
-      if (confirmationRequired) {
-        const trimmedEmail = newEmail.trim();
-        setPendingUnconfirmedEmailState(trimmedEmail);
-        writePendingUnconfirmedEmail(trimmedEmail);
-      }
-      return { error: null, confirmationRequired };
-    },
-    []
-  );
-
-  const resendConfirmationEmail = useCallback(
-    async (targetEmail?: string) => {
-      const emailToSend = (targetEmail || unconfirmedEmail || user?.email || '').trim();
-      if (!emailToSend) {
-        return { error: 'No email address specified.' };
-      }
-
-      if (!isSupabaseConfigured || !supabase) {
-        return { error: 'Cloud sync is not configured yet.' };
-      }
-
-      const emailRedirectTo = getAuthRedirectUrl();
-
-      const { error } = await supabase.auth.resend({
-        type: 'signup',
-        email: emailToSend,
-        options: {
-          emailRedirectTo,
-        },
-      });
-
-      return { error: error?.message ?? null };
-    },
-    [unconfirmedEmail, user?.email]
   );
 
   const signOut = useCallback(async () => {
@@ -425,36 +287,12 @@ export const RemoteAuthProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       setPendingUnconfirmedEmail,
       dismissPrompt,
       resetPrompt,
-      signInWithGoogle,
       signUpWithEmail,
       signInWithPassword,
-      resetPassword,
       updatePassword,
-      updateEmail,
-      resendConfirmationEmail,
-      clearPasswordRecovery,
       signOut,
     }),
-    [
-      clearPasswordRecovery,
-      dismissPrompt,
-      isLoading,
-      isPasswordRecovery,
-      isPromptDismissed,
-      resendConfirmationEmail,
-      resetPassword,
-      resetPrompt,
-      session,
-      setPendingUnconfirmedEmail,
-      signInWithGoogle,
-      signInWithPassword,
-      signOut,
-      signUpWithEmail,
-      unconfirmedEmail,
-      updateEmail,
-      updatePassword,
-      user,
-    ]
+    [user, session, isLoading, isPromptDismissed, isPasswordRecovery, unconfirmedEmail]
   );
 
   return <RemoteAuthContext.Provider value={value}>{children}</RemoteAuthContext.Provider>;
